@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en" data-role="student">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d3862" id="theme-color">
+<title>Woosh!</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" color="%231c75bc"%3E%3Cdefs%3E%3CclipPath id="f"%3E%3Ccircle cx="39" cy="32" r="15.5"/%3E%3C/clipPath%3E%3C/defs%3E%3Cpath d="M6 21.5h8M2 32h12.5M6 42.5h8" stroke="%231c75bc" stroke-width="4.5" stroke-linecap="round"/%3E%3Ccircle cx="39" cy="32" r="20.5" stroke="%231c75bc" stroke-width="5"/%3E%3Cg clip-path="url%28%23f%29"%3E%3Cpath d="M21 33c3.2-4.2 6.4-4.2 9.6 0s6.4 4.2 9.6 0 6.4-4.2 9.6 0 6.4 4.2 9.6 0V52H21z" fill="%231c75bc" opacity=".45"/%3E%3C/g%3E%3Cpath d="M29.5 24.5a11.5 11.5 0 0 1 7-5.4" stroke="%231c75bc" stroke-width="3.2" stroke-linecap="round"/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ================= Woosh! design system (v7) =================
+   Canvas + white cards, tonal elevation (no shadows), 11px radius on every
+   button, card and input, 48dp touch targets, Montserrat throughout. */
+:root{
+  --blue:#1c75bc; --oxford:#0d3862; --staff:#0f766e; --staff-bar:#134e4a;
+  --bg:#ffffff; --canvas:#f2f6fa; --soft:#eaf0f6; --ink:#0d1b2a; --muted:#5b6b7c; --line:#dde5ee;
+  --danger:#c0392b; --danger-bg:#fbeceb; --r:11px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#16283e;--canvas:#0f1d2e;--soft:#1c3250;--ink:#eaf1f8;--muted:#9db0c4;--line:#2a4466;--danger:#ff7b6b;--danger-bg:#3a2024;}
+}
+:root[data-theme="dark"]{--bg:#16283e;--canvas:#0f1d2e;--soft:#1c3250;--ink:#eaf1f8;--muted:#9db0c4;--line:#2a4466;--danger:#ff7b6b;--danger-bg:#3a2024;}
+*,*::before,*::after{box-sizing:border-box;}
+html{height:100%;background:var(--canvas);scroll-padding-top:env(safe-area-inset-top,0px);}
+@media (max-width:480px){
+  html{background:linear-gradient(var(--oxford) 0 50%,var(--bg) 50% 100%);}
+  html[data-role="staff"]{background:linear-gradient(var(--staff-bar) 0 50%,var(--bg) 50% 100%);}
+}
+body{height:100%;margin:0;background:var(--canvas);color:var(--ink);font-family:'Montserrat','Noto Sans Devanagari','Noto Sans Gujarati',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+button,input,select,textarea{font-family:inherit;color:inherit;}
+svg{flex-shrink:0;}
+:focus-visible{outline:3px solid var(--accent-ink,#1c75bc);outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition:none !important;animation:none !important;}}
+
+/* role tokens: student = Anant Blue, staff = teal */
+#app{
+  --accent:var(--blue);--on-accent:#ffffff;--accent-ink:var(--blue);--tonal:#e6f0fa;--on-tonal:#0d3862;
+  --bar:var(--oxford);--on-bar:#ffffff;--bar-btn:rgba(255,255,255,.14);
+  --avatar-bg:var(--blue);--avatar-fg:#ffffff;
+  --sb:0px;--gb:0px;--sb-bg:var(--bar);--sb-fg:var(--on-bar);
+  --reg-c:#0f766e;--ext-c:#7e22ce;
+  height:100%;max-width:480px;margin:0 auto;position:relative;display:flex;flex-direction:column;overflow:hidden;background:var(--bg);
+}
+#app[data-role="staff"]{
+  --accent:var(--staff);--on-accent:#ffffff;--accent-ink:var(--staff);--tonal:#e1f2ef;--on-tonal:#134e4a;
+  --bar:var(--staff-bar);--on-bar:#ffffff;--bar-btn:rgba(255,255,255,.14);
+  --avatar-bg:#ffffff;--avatar-fg:var(--staff-bar);
+}
+#app[data-screen="entry"]{--sb-bg:var(--canvas);--sb-fg:var(--ink);}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) #app[data-role="student"]{--accent-ink:#5aa6e0;--tonal:#17324f;--on-tonal:#cfe3f6;}
+  :root:not([data-theme="light"]) #app[data-role="staff"]{--accent-ink:#2dd4bf;--tonal:#123b38;--on-tonal:#c8efe9;}
+  :root:not([data-theme="light"]) #app{--reg-c:#2dd4bf;--ext-c:#c084fc;}
+}
+:root[data-theme="dark"] #app[data-role="student"]{--accent-ink:#5aa6e0;--tonal:#17324f;--on-tonal:#cfe3f6;}
+:root[data-theme="dark"] #app[data-role="staff"]{--accent-ink:#2dd4bf;--tonal:#123b38;--on-tonal:#c8efe9;}
+:root[data-theme="dark"] #app{--reg-c:#2dd4bf;--ext-c:#c084fc;}
+
+/* ---------- Android device frame (desktop only; phones render edge to edge) ---------- */
+.stage,.device{height:100%;}
+.statusbar,.punch,.home-ind{display:none;}
+@media (min-width:481px){
+  html,body{background:#e6ebf1;}
+  body{height:auto;min-height:100%;display:flex;align-items:center;justify-content:center;padding:16px;}
+  .stage{position:relative;height:auto;flex-shrink:0;}
+  .device{position:absolute;top:0;left:0;transform-origin:0 0;width:436px;height:939px;padding:10px;background:#0b1118;border:2px solid #2b3642;border-radius:46px;}
+  .device::before{content:'';position:absolute;right:-6px;top:170px;width:4px;height:62px;border-radius:0 3px 3px 0;background:#2b3642;}
+  .device::after{content:'';position:absolute;right:-6px;top:256px;width:4px;height:112px;border-radius:0 3px 3px 0;background:#2b3642;}
+  .device #app{--sb:36px;--gb:20px;width:412px;height:915px;max-width:none;border-radius:34px;padding-bottom:20px;}
+  .punch{display:block;position:absolute;top:22px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:7px;background:#000;z-index:200;}
+  .statusbar{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;height:36px;padding:0 20px 0 24px;background:var(--sb-bg);color:var(--sb-fg);font-size:14px;font-weight:600;}
+  .sb-icons{display:flex;align-items:center;gap:6px;}
+  .home-ind{display:block;position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:108px;height:4px;border-radius:2px;background:var(--ink);opacity:.4;z-index:45;}
+  .content{scrollbar-width:none;}
+  .content::-webkit-scrollbar{display:none;}
+}
+@media (min-width:481px) and (prefers-color-scheme: dark){html,body{background:#05090f;}}
+
+/* ---------- screen shell ---------- */
+#screen-root{flex:1;display:flex;flex-direction:column;min-height:0;}
+.screen{flex:1;display:flex;flex-direction:column;min-height:0;background:var(--canvas);}
+.topbar{display:flex;align-items:center;gap:4px;min-height:64px;padding:8px 10px 8px 8px;background:var(--bar);color:var(--on-bar);flex-shrink:0;}
+.bar-logo{display:flex;margin-left:8px;color:var(--on-bar);}
+.bar-logo + h1{margin-left:10px !important;}
+.topbar h1{flex:1;margin:0 0 0 8px;font-size:20px;font-weight:700;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.icon-btn{width:48px;height:48px;flex-shrink:0;border:none;border-radius:var(--r);background:transparent;color:var(--on-bar);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;font-weight:700;padding:0;transition:background .15s;}
+.icon-btn:active{background:var(--bar-btn);}
+.icon-btn svg{width:24px;height:24px;}
+.icon-btn.avatar{width:40px;height:40px;margin:0 4px 0 6px;background:var(--avatar-bg);color:var(--avatar-fg);}
+.content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch;}
+.actions{flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:12px 16px;border-top:1px solid var(--line);background:var(--bg);}
+.actions .total{margin-right:auto;font-size:17px;font-weight:700;}
+.actions .btn{min-height:52px;padding:0 24px;font-size:16px;}
+.rules-bar{flex-shrink:0;border-top:1px solid var(--line);padding:4px 12px;background:var(--bg);}
+.rules-bar .btn{width:100%;min-height:44px;background:transparent;border:none;color:var(--accent-ink);font-size:14px;}
+
+/* ---------- buttons ---------- */
+.btn{min-height:48px;border:none;border-radius:var(--r);padding:12px 20px;font-size:15px;font-weight:600;line-height:1.2;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;text-align:center;transition:opacity .15s,background .15s;}
+.btn:active{opacity:.86;}
+.btn:disabled{opacity:.38;cursor:not-allowed;}
+.btn svg{width:20px;height:20px;}
+.btn-accent{background:var(--accent);color:var(--on-accent);}
+.btn-outline{background:transparent;color:var(--accent-ink);border:1.5px solid var(--accent-ink);}
+.btn-soft{background:var(--tonal);color:var(--on-tonal);}
+.btn-sm{min-height:44px;padding:8px 16px;font-size:14px;}
+.btn-list{display:flex;flex-direction:column;gap:12px;}
+.badge{min-width:26px;height:26px;padding:0 8px;border-radius:var(--r);background:#ffffff;color:var(--oxford);font-size:13px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+
+/* list rows (menus, payment options, hostels, floors, languages) */
+.row-btn{display:flex;align-items:center;gap:14px;width:100%;min-height:76px;padding:12px 12px 12px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);color:var(--ink);text-align:left;cursor:pointer;transition:background .15s;}
+.row-btn:active{background:var(--soft);}
+.row-ic{width:48px;height:48px;border-radius:var(--r);background:var(--tonal);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.row-ic svg{width:24px;height:24px;}
+.row-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
+.row-t{font-size:16px;font-weight:600;line-height:1.3;}
+.row-s{font-size:13px;font-weight:500;color:var(--muted);line-height:1.35;}
+.row-chev{color:var(--muted);display:flex;}
+
+/* ---------- entry ---------- */
+.entry{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 20px;background:var(--canvas);}
+.brand-mark{width:72px;height:72px;margin:0 auto 20px;border-radius:var(--r);background:var(--blue);color:#ffffff;display:flex;align-items:center;justify-content:center;}
+.brand-mark svg{width:46px;height:46px;}
+.brand{margin:0;text-align:center;font-size:40px;font-weight:700;letter-spacing:-.8px;color:var(--ink);line-height:1.1;}
+.brand-sub{margin:10px 0 0;text-align:center;font-size:16px;font-weight:500;color:var(--muted);line-height:1.45;}
+.role-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px;}
+.role-card{min-height:156px;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:16px;text-align:left;gap:14px;}
+.role-card .rc-ic{width:48px;height:48px;border-radius:var(--r);background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;}
+.role-card .rc-ic svg{width:26px;height:26px;}
+.role-card .rc-t{display:block;font-size:19px;font-weight:700;}
+.role-card .rc-s{display:block;font-size:13px;font-weight:500;opacity:.92;margin-top:4px;line-height:1.35;}
+.btn-student{background:var(--blue);color:#ffffff;}
+.btn-staff{background:var(--staff);color:#ffffff;}
+.sync-row{display:flex;justify-content:center;margin-top:24px;}
+.loading{text-align:center;font-size:15px;font-weight:600;color:var(--muted);margin-top:12px;}
+
+/* ---------- student home ---------- */
+.hello{font-size:26px;font-weight:700;letter-spacing:-.4px;line-height:1.2;}
+.hello-sub{font-size:14.5px;font-weight:500;color:var(--muted);margin-top:4px;}
+.daycard{display:flex;align-items:center;gap:14px;margin:16px 0;padding:14px 16px;border-radius:var(--r);background:var(--tonal);color:var(--on-tonal);}
+.daycard .dc-ic{width:44px;height:44px;border-radius:var(--r);background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.daycard .dc-t{font-size:15.5px;font-weight:700;line-height:1.3;}
+.daycard .dc-s{font-size:13.5px;font-weight:500;opacity:.9;margin-top:3px;line-height:1.4;}
+
+/* ---------- landing tiles (square) ---------- */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tile{position:relative;aspect-ratio:1/1;border:none;border-radius:var(--r);background:var(--accent);color:var(--on-accent);display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;padding:16px;text-align:left;cursor:pointer;transition:opacity .15s;}
+.tile:active{opacity:.88;}
+.tile-ic{width:52px;height:52px;border-radius:var(--r);background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;}
+.tile-ic svg{width:28px;height:28px;}
+.tile-l{font-size:17px;font-weight:700;line-height:1.25;max-width:100%;hyphens:manual;-webkit-hyphens:manual;}
+.tile .badge{position:absolute;top:14px;right:14px;}
+.tile.tone-hostel{background:#0f766e;color:#ffffff;}
+.tile.tone-lf{background:#4338ca;color:#ffffff;}
+.tile.tone-complaints{background:#b91c1c;color:#ffffff;}
+.tile.tone-ann{background:#92400e;color:#ffffff;}
+.tile.tone-extra{background:#7e22ce;color:#ffffff;}
+.tiles.five{grid-template-columns:repeat(6,1fr);gap:10px;}
+.tiles.five .tile{grid-column:span 2;padding:12px;}
+.tiles.five .tile:nth-child(4){grid-column:2 / span 2;}
+.tiles.five .tile-ic{width:40px;height:40px;}
+.tiles.five .tile-ic svg{width:22px;height:22px;}
+.tiles.five .tile{padding:10px;}
+.tiles.five .tile-l{font-size:13px;}
+
+/* ---------- forms ---------- */
+.field{margin-bottom:18px;}
+.field>label{display:block;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.input{width:100%;min-height:56px;padding:14px 16px;border-radius:var(--r);border:1.5px solid var(--line);background:var(--bg);color:var(--ink);font-size:16px;outline:none;transition:border-color .15s;}
+.input::placeholder{color:#8795a3;}
+.input:focus{border-color:var(--accent-ink);outline:1px solid var(--accent-ink);}
+select.input{appearance:none;-webkit-appearance:none;padding-right:48px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%235b6b7c' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+textarea.input{min-height:128px;resize:vertical;line-height:1.5;}
+.room-row{display:flex;gap:10px;}
+.room-row .input{flex:1;min-width:0;}
+.room-row .btn{width:56px;min-height:56px;padding:0;flex-shrink:0;font-size:17px;}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.seg .btn{min-height:52px;padding:0;font-size:16px;}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.tabs{display:flex;gap:8px;margin-bottom:16px;}
+.tabs .btn{flex:1;min-height:44px;padding:8px 6px;font-size:14px;}
+.tabs .btn-outline{background:var(--bg);border:1px solid var(--line);color:var(--muted);}
+
+/* ---------- laundry item rows ---------- */
+.item{border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;background:var(--bg);overflow:hidden;transition:border-color .15s;}
+.item.open{border-color:var(--accent-ink);}
+.item-head{width:100%;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px 12px 16px;background:none;border:none;color:var(--ink);cursor:pointer;text-align:left;}
+.item-head .nm{display:block;font-size:16px;font-weight:600;line-height:1.3;}
+.item-head .pr{display:block;font-size:13.5px;font-weight:600;color:var(--accent-ink);margin-top:4px;}
+.item-head .pr.hint{color:var(--muted);font-weight:500;font-size:12.5px;}
+.item-head .rt{display:flex;align-items:center;gap:10px;color:var(--muted);flex-shrink:0;}
+.item-head .q{min-width:28px;height:28px;padding:0 8px;border-radius:var(--r);background:var(--accent);color:var(--on-accent);font-size:14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;}
+.item.locked .item-head{cursor:not-allowed;}
+.item.locked .nm,.item.locked .rt{opacity:.5;}
+.item-head .pr.hint.lk{display:flex;align-items:center;gap:5px;}
+.item-head .pr.hint.lk svg{width:14px;height:14px;}
+.tip{position:relative;margin:0 14px 14px;padding:10px 12px;border-radius:var(--r);background:#1f2a37;color:#ffffff;font-size:13.5px;font-weight:500;line-height:1.45;}
+.tip::before{content:'';position:absolute;top:-6px;left:22px;width:12px;height:12px;background:#1f2a37;transform:rotate(45deg);}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .tip,:root:not([data-theme="light"]) .tip::before{background:#eaf1f8;color:#0d1b2a;}}
+.item-body{border-top:1px solid var(--line);padding:14px 16px 16px;}
+.body-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.stepper{display:flex;align-items:center;gap:4px;padding:4px;border-radius:var(--r);background:var(--soft);}
+.step{width:48px;height:48px;border:none;border-radius:var(--r);background:var(--bg);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+.step svg{width:22px;height:22px;}
+.qty{min-width:44px;text-align:center;font-size:20px;font-weight:700;}
+.cam{height:48px;min-width:48px;padding:0 16px;border:1.5px solid var(--accent-ink);border-radius:var(--r);background:transparent;color:var(--accent-ink);display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0;}
+.cam svg{width:22px;height:22px;}
+.cam.lg{width:88px;height:88px;padding:0;flex-direction:column;gap:6px;font-size:12px;border-style:dashed;}
+.opt{display:flex;align-items:center;gap:14px;min-height:52px;padding:4px 0;font-size:16px;font-weight:500;cursor:pointer;}
+.opt+.opt{border-top:1px solid var(--line);}
+
+/* ---------- photos (tap any photo to view it full screen) ---------- */
+.photos,.photo-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:10px 10px 0 0;}
+.thumb{position:relative;width:88px;height:88px;flex-shrink:0;}
+.thumb-btn{position:relative;display:block;width:100%;height:100%;padding:0;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--soft);cursor:zoom-in;}
+.thumb-btn img{width:100%;height:100%;object-fit:cover;display:block;}
+.thumb-zoom{position:absolute;right:6px;bottom:6px;width:26px;height:26px;border-radius:var(--r);background:rgba(13,27,42,.62);color:#ffffff;display:flex;align-items:center;justify-content:center;}
+.thumb-zoom svg{width:14px;height:14px;}
+.thumb .x{position:absolute;top:-10px;right:-10px;z-index:1;width:28px;height:28px;border-radius:var(--r);border:2px solid var(--bg);background:var(--oxford);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+.lb{position:absolute;inset:0;z-index:95;background:rgba(5,10,18,.94);display:flex;align-items:center;justify-content:center;padding:calc(64px + var(--sb)) 12px calc(40px + var(--gb));}
+.lb-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:var(--r);display:block;}
+.lb-x{position:absolute;top:calc(12px + var(--sb));right:12px;width:48px;height:48px;border:none;border-radius:var(--r);background:rgba(255,255,255,.16);color:#ffffff;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.lb-x svg{width:24px;height:24px;}
+.lb-hint{position:absolute;left:0;right:0;bottom:calc(14px + var(--gb));text-align:center;font-size:13px;font-weight:500;color:rgba(255,255,255,.7);}
+
+/* ---------- cards ---------- */
+.card{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;background:var(--bg);}
+.card .t{font-size:15.5px;font-weight:600;line-height:1.35;}
+.card .s{font-size:14px;font-weight:500;color:var(--muted);margin-top:4px;line-height:1.45;overflow-wrap:anywhere;}
+.card .d{font-size:12.5px;font-weight:500;color:var(--muted);margin-top:8px;}
+.card .d.top{margin:0 0 10px;}
+.card-row{display:flex;gap:14px;align-items:flex-start;}
+.ann-ic{width:44px;height:44px;flex-shrink:0;border-radius:var(--r);background:var(--tonal);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;}
+.ann-ic svg{width:22px;height:22px;}
+.grow{flex:1;min-width:0;}
+.card-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
+.chk{width:24px;height:24px;margin:0;accent-color:var(--accent);flex-shrink:0;cursor:pointer;}
+.chk-inline{display:flex;align-items:center;gap:10px;min-height:44px;padding-right:4px;font-size:14.5px;font-weight:600;cursor:pointer;}
+.state{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:var(--r);background:var(--tonal);color:var(--on-tonal);font-size:13px;font-weight:700;}
+.state svg{width:16px;height:16px;}
+.state.bad{background:var(--danger-bg);color:var(--danger);}
+.row-sb{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.line{display:flex;justify-content:space-between;gap:10px;padding:10px 0;font-size:15px;}
+.line.total{border-top:1px solid var(--line);margin-top:4px;padding-top:12px;font-size:16px;font-weight:700;}
+.summary{margin-bottom:16px;padding:6px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg);}
+.empty{text-align:center;color:var(--muted);font-size:15px;font-weight:500;padding:48px 16px;line-height:1.5;}
+.empty.sm{padding:14px 0;font-size:13px;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.col-h{text-align:center;font-weight:700;font-size:16px;padding:12px;border-radius:var(--r);background:var(--tonal);color:var(--on-tonal);margin-bottom:12px;}
+.col .btn{width:100%;min-height:52px;margin-bottom:10px;background:var(--bg);}
+.notice{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;margin-bottom:16px;border-radius:var(--r);background:var(--tonal);color:var(--on-tonal);font-size:14px;line-height:1.5;}
+.notice svg{color:var(--accent-ink);margin-top:1px;}
+.rules-list{margin:0 0 20px;padding-left:22px;font-size:15px;line-height:1.55;color:var(--ink);}
+.rules-list li+li{margin-top:8px;}
+
+/* ---------- staff summary card (whole landing fits one screen) ---------- */
+.sc{border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:var(--bg);}
+.sc-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.sc-head{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:700;color:var(--accent-ink);}
+.sc-tag{font-size:12px;font-weight:600;color:var(--muted);}
+.sc-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-top:1px solid var(--line);}
+.sc-k{font-size:13.5px;font-weight:600;color:var(--muted);flex-shrink:0;}
+.sc-v{font-size:15px;font-weight:700;text-align:right;}
+.sc-v .sc-sub{display:inline;margin-left:6px;font-size:12.5px;font-weight:500;color:var(--muted);}
+.sc-muted{font-size:13px;font-weight:500;color:var(--muted);}
+.chips{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px;}
+.chip{font-size:13px;font-weight:700;padding:6px 10px;border-radius:var(--r);background:var(--tonal);color:var(--on-tonal);}
+.chip b{margin-left:4px;}
+.sc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 12px;}
+.stat{border-radius:var(--r);padding:8px 6px;text-align:center;background:var(--canvas);border:1.5px solid var(--line);}
+.stat .n{font-size:21px;font-weight:700;line-height:1.1;}
+.stat .l{font-size:12px;font-weight:600;color:var(--muted);margin-top:3px;}
+.stat.reg{border-color:var(--reg-c);} .stat.reg .n{color:var(--reg-c);}
+.stat.ext{border-color:var(--ext-c);} .stat.ext .n{color:var(--ext-c);}
+.sc-table{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;}
+.sc-table th,.sc-table td{padding:8px 12px;text-align:right;border-top:1px solid var(--line);}
+.sc-table thead th{border-top:none;background:var(--canvas);font-size:12.5px;font-weight:700;position:sticky;top:0;z-index:1;}
+.sc-table thead th:first-child,.sc-table tbody th{text-align:left;font-weight:600;}
+.sc-table td{font-weight:700;}
+.sc-table .c-reg{color:var(--reg-c);} .sc-table .c-ext{color:var(--ext-c);}
+.content.fit{display:flex;flex-direction:column;gap:12px;}
+.content.fit .sc{flex:0 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+.content.fit .sc > *:not(.sc-scroll){flex-shrink:0;}
+.sc-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;border:1px solid var(--line);border-radius:var(--r);}
+.sc-empty{padding:12px;}
+.content.fit .tiles{flex-shrink:0;}
+
+/* ---------- dialogs & bottom sheets ---------- */
+.backdrop{position:absolute;inset:0;z-index:50;background:rgba(8,16,28,.52);display:flex;align-items:center;justify-content:center;padding:24px;}
+.modal{width:100%;max-width:360px;max-height:100%;overflow-y:auto;background:var(--bg);border-radius:var(--r);padding:24px;}
+.modal h2{margin:0 0 12px;font-size:20px;font-weight:700;line-height:1.3;}
+.modal p{margin:0 0 16px;font-size:15px;line-height:1.55;color:var(--muted);}
+.mbtns{display:flex;gap:10px;margin-top:8px;}
+.mbtns .btn{flex:1;}
+.mbtns.col{flex-direction:column;}
+.backdrop.sheet{align-items:flex-end;padding:0;}
+.modal.sheet{max-width:none;max-height:88%;border-radius:var(--r) var(--r) 0 0;padding:10px 20px calc(24px + var(--gb));}
+.handle{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 18px;}
+.preview{width:100%;max-height:50vh;object-fit:contain;border-radius:var(--r);background:var(--soft);display:block;margin-bottom:16px;}
+.msec{padding:16px 0;border-top:1px solid var(--line);}
+.msec:first-child,.handle + .msec{padding-top:0;border-top:none;}
+.msec:last-child{padding-bottom:0;}
+.msec-h{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--accent-ink);margin-bottom:12px;}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:10px 16px;margin:0;font-size:14.5px;}
+.kv dt{color:var(--muted);font-weight:500;}
+.kv dd{margin:0;font-weight:600;text-align:right;overflow-wrap:anywhere;}
+.msec .btn{width:100%;}
+
+/* ---------- sync chip, heads-up notification, snackbar ---------- */
+.sync{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;border:none;border-radius:var(--r);background:var(--bar-btn);color:var(--on-bar);font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+.sync .dot{width:8px;height:8px;border-radius:4px;background:#22c55e;flex-shrink:0;}
+.sync.warn .dot{background:#f59e0b;}
+.sync.off .dot{background:#ef4444;}
+.sync.light{background:var(--bg);color:var(--ink);border:1px solid var(--line);}
+#notif{position:absolute;left:10px;right:10px;top:calc(8px + var(--sb));z-index:70;pointer-events:none;}
+.notif{pointer-events:none;display:flex;gap:12px;align-items:flex-start;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;opacity:0;transform:translateY(-12px);transition:opacity .2s ease,transform .2s ease;cursor:pointer;}
+.notif.show{opacity:1;transform:none;pointer-events:auto;}
+.notif .ann-ic{background:var(--accent);color:var(--on-accent);}
+.notif .app{font-size:11.5px;font-weight:600;color:var(--muted);}
+.notif .tt{font-size:14.5px;font-weight:700;margin-top:1px;}
+.notif .bd{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.4;}
+#toast{position:absolute;left:16px;right:16px;bottom:calc(92px + var(--gb));z-index:60;display:flex;justify-content:center;pointer-events:none;}
+.toast{max-width:380px;background:#1f2a37;color:#ffffff;border-radius:var(--r);padding:14px 18px;font-size:14px;font-weight:600;line-height:1.4;opacity:0;transform:translateY(8px);transition:opacity .18s ease,transform .18s ease;}
+.toast.show{opacity:1;transform:none;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .toast{background:#eaf1f8;color:#0d1b2a;}}
+</style>
+</head>
+<body>
+<div class="stage"><div class="device">
+<div class="punch" aria-hidden="true"></div>
+<div id="app" data-role="student">
+  <div class="statusbar" aria-hidden="true">
+    <span id="sb-time">9:41</span>
+    <span class="sb-icons">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.5 1.5 8.4a15.2 15.2 0 0 1 21 0z"/></svg>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M22 2 2 22h20z"/></svg>
+      <svg width="10" height="16" viewBox="0 0 10 16" fill="currentColor"><rect x="3" y="0" width="4" height="2" rx=".5"/><rect x="0" y="1.5" width="10" height="14.5" rx="1.8"/></svg>
+    </span>
+  </div>
+  <div id="screen-root"></div>
+  <div id="modal-root"></div>
+  <div id="toast"></div>
+  <div id="notif"></div>
+  <div id="lightbox"></div>
+  <div class="home-ind" aria-hidden="true"></div>
+</div>
+</div></div>
+<input type="file" id="cam-input" accept="image/*" capture="environment" hidden>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= constants ================= */
+const KEY = 'kapde_v2';
+const SKEY = 'kapde_session';
+const LAUNDRY_DAYS = {'SH-1':[1,3,5], 'Mayflower':[1,3,5], 'Faculty Housing':[1,3,5], 'SH-2':[2,4,6], 'SH-3':[2,4,0]};
+const MONTH = 30 * 24 * 60 * 60 * 1000;
+const HOSTELS = ['SH-1','SH-2','SH-3','Mayflower','Faculty Housing'];
+const WINGS = ['A','B','C','D'];
+const FLOORS_DEFAULT = [2,3,4,5,6,7,8];
+const FLOORS_SH1 = [1,2,3,4];
+const REGULAR = [
+  {k:'shirts', n:'Shirts/T-shirts/Sweatshirts'},
+  {k:'jeans', n:'Jeans/Lowers'},
+  {k:'towels', n:'Towels/Napkins'},
+  {k:'bedsheets', n:'Bedsheets'},
+  {k:'pillow', n:'Pillowcase'}
+];
+const EXTRA = [
+  {k:'blankets', n:'Blankets', p:300},
+  {k:'comforter', n:'Comforter', p:200},
+  {k:'jacket', n:'Jacket', p:150},
+  {k:'dry', n:'Dry cleaning', p:300},
+  {k:'shoes', n:'Shoes', p:350}
+];
+const ISSUES = ['Stain','Torn','Faded','Others'];
+const MAX_REGULAR = 8;
+const RULES = [
+  'Laundry open 4pm-8pm daily.',
+  'SH-1, Mayflower, Faculty: Mon/Wed/Fri. SH-2: Tue/Thu/Sat. SH-3: Tue/Thu/Sun.',
+  'One bag (max 8 items) per day.',
+  'Bedsheets only on 1st/15th.',
+  "If date/day don't align, submit on 1st/15th regardless.",
+  'History auto-deletes monthly.',
+  'Help: 0000000000'
+];
+
+/* ================= staff translations ================= */
+const T = {
+  en:{
+    staffLogin:'Staff Login', staffName:'Staff Name', staffId:'Staff ID', namePh:'Your full name', idPh:'e.g. ST1024',
+    submit:'Submit', fillAll:'Fill in all fields.', hostel:'Hostel', lostFound:'Lost & Found', complaints:'Complaints',
+    announcements:'Announcements', extraServices:'Extra Services', wing:'{w} Wing', floor:'Floor {n}', noBags:'No bags',
+    studentId:'Student ID: {id}', room:'Room {r}', done:'Done', received:'Received', resolved:'Resolved', unresolved:'Unresolved',
+    pending:'Pending', completed:'Completed', total:'Total ₹{t}', payment:'Payment: {m}',
+    noReceived:'No complaints received.', noResolved:'No resolved complaints.', noUnresolved:'No unresolved complaints.',
+    noPending:'No pending orders.', noCompleted:'No completed orders.', noPosts:'No posts yet.',
+    found:'Found', foundBy:'Found by {n}', laundryClosed:'Laundry closed', closureTitle:'Laundry closure',
+    fromDate:'From', toDate:'To', cancel:'Cancel', post:'Post', ok:'OK', selectBoth:'Select both dates.',
+    toAfterFrom:'"To" date must be on or after "From".', noAnnouncements:'No announcements yet.',
+    logout:'Logout', logoutConfirm:'Are you sure you want to log out?', closedRange:'{a} to {b}', completedOn:'Completed {d}',
+    summaryTitle:"Today's Summary", day:'Day', regular:'Regular', extra:'Extra', totalLbl:'Total', bagsByFloor:'Bags by floor', floorCol:'Floor',
+    noLaundryToday:'No hostel has laundry today.', noSubsToday:'No submissions yet today.', idTaken:'This Staff ID is registered to a different name.', pendingBags:'Pending bags',
+    sync_live:'Live', sync_connecting:'Connecting', sync_offline:'Offline', sync_device:'This device only', syncTitle:'Sync status',
+    syncLiveMsg:'Live. Everyone using Woosh! sees the same data on every device.', syncOfflineMsg:"Can't reach the sync server. Your changes are saved on this device and will sync automatically when the connection is back.",
+    syncDeviceMsg:"Shared sync isn't available here, so data stays on this device.", lastSynced:'Last synced: {t}'
+  },
+  hi:{
+    staffLogin:'स्टाफ लॉगिन', staffName:'स्टाफ का नाम', staffId:'स्टाफ आईडी', namePh:'आपका पूरा नाम', idPh:'जैसे ST1024',
+    submit:'जमा करें', fillAll:'सभी जानकारी भरें।', hostel:'हॉस्टल', lostFound:'खोया-पाया', complaints:'शिकायतें',
+    announcements:'घोषणाएँ', extraServices:'अतिरिक्त सेवाएँ', wing:'{w} विंग', floor:'मंज़िल {n}', noBags:'कोई बैग नहीं',
+    studentId:'छात्र आईडी: {id}', room:'कमरा {r}', done:'पूरा', received:'प्राप्त', resolved:'हल हुई', unresolved:'हल नहीं हुई',
+    pending:'बाकी', completed:'पूरे हुए', total:'कुल ₹{t}', payment:'भुगतान: {m}',
+    noReceived:'कोई नई शिकायत नहीं।', noResolved:'कोई हल हुई शिकायत नहीं।', noUnresolved:'कोई अनसुलझी शिकायत नहीं।',
+    noPending:'कोई बाकी ऑर्डर नहीं।', noCompleted:'कोई पूरा ऑर्डर नहीं।', noPosts:'अभी कोई पोस्ट नहीं।',
+    found:'मिल गया', foundBy:'{n} को मिला', laundryClosed:'लॉन्ड्री बंद', closureTitle:'लॉन्ड्री बंद रहेगी',
+    fromDate:'शुरू की तारीख', toDate:'आखिरी तारीख', cancel:'रद्द करें', post:'पोस्ट करें', ok:'ठीक है', selectBoth:'दोनों तारीखें चुनें।',
+    toAfterFrom:'आखिरी तारीख, शुरू की तारीख के बाद की होनी चाहिए।', noAnnouncements:'अभी कोई घोषणा नहीं।',
+    logout:'लॉग आउट', logoutConfirm:'क्या आप लॉग आउट करना चाहते हैं?', closedRange:'{a} से {b} तक', completedOn:'{d} को पूरा हुआ',
+    summaryTitle:'आज का सारांश', day:'दिन', regular:'रेगुलर', extra:'अतिरिक्त', totalLbl:'कुल', bagsByFloor:'मंज़िल के अनुसार बैग', floorCol:'मंज़िल',
+    noLaundryToday:'आज किसी हॉस्टल का लॉन्ड्री दिन नहीं है।', noSubsToday:'आज अभी तक कोई बैग नहीं आया।', idTaken:'यह स्टाफ आईडी किसी दूसरे नाम से पंजीकृत है।', pendingBags:'बाकी बैग',
+    sync_live:'लाइव', sync_connecting:'कनेक्ट हो रहा है', sync_offline:'ऑफ़लाइन', sync_device:'सिर्फ़ यह डिवाइस', syncTitle:'सिंक स्थिति',
+    syncLiveMsg:'लाइव: सभी डिवाइस पर एक जैसा डेटा दिख रहा है।', syncOfflineMsg:'सिंक सर्वर से कनेक्शन नहीं है। आपके बदलाव इस डिवाइस पर सुरक्षित हैं और कनेक्शन लौटते ही अपने-आप सिंक हो जाएँगे।',
+    syncDeviceMsg:'यहाँ साझा सिंक उपलब्ध नहीं है, इसलिए डेटा सिर्फ़ इसी डिवाइस पर रहेगा।', lastSynced:'आख़िरी सिंक: {t}'
+  },
+  gu:{
+    staffLogin:'સ્ટાફ લૉગિન', staffName:'સ્ટાફનું નામ', staffId:'સ્ટાફ આઈડી', namePh:'તમારું પૂરું નામ', idPh:'દા.ત. ST1024',
+    submit:'સબમિટ કરો', fillAll:'બધી વિગતો ભરો.', hostel:'હોસ્ટેલ', lostFound:'ખોવાયેલું-મળેલું', complaints:'ફરિયાદો',
+    announcements:'જાહેરાતો', extraServices:'વધારાની સેવાઓ', wing:'{w} વિંગ', floor:'માળ {n}', noBags:'કોઈ બેગ નથી',
+    studentId:'વિદ્યાર્થી આઈડી: {id}', room:'રૂમ {r}', done:'પૂર્ણ', received:'મળેલી', resolved:'ઉકેલાઈ', unresolved:'ઉકેલાઈ નથી',
+    pending:'બાકી', completed:'પૂર્ણ થયેલ', total:'કુલ ₹{t}', payment:'ચુકવણી: {m}',
+    noReceived:'કોઈ નવી ફરિયાદ નથી.', noResolved:'કોઈ ઉકેલાયેલી ફરિયાદ નથી.', noUnresolved:'કોઈ વણઉકેલી ફરિયાદ નથી.',
+    noPending:'કોઈ બાકી ઓર્ડર નથી.', noCompleted:'કોઈ પૂર્ણ ઓર્ડર નથી.', noPosts:'હજી કોઈ પોસ્ટ નથી.',
+    found:'મળી ગયું', foundBy:'{n}ને મળ્યું', laundryClosed:'લોન્ડ્રી બંધ', closureTitle:'લોન્ડ્રી બંધ રહેશે',
+    fromDate:'શરૂઆતની તારીખ', toDate:'છેલ્લી તારીખ', cancel:'રદ કરો', post:'પોસ્ટ કરો', ok:'બરાબર', selectBoth:'બંને તારીખો પસંદ કરો.',
+    toAfterFrom:'છેલ્લી તારીખ શરૂઆતની તારીખ પછીની હોવી જોઈએ.', noAnnouncements:'હજી કોઈ જાહેરાત નથી.',
+    logout:'લૉગ આઉટ', logoutConfirm:'શું તમે લૉગ આઉટ કરવા માંગો છો?', closedRange:'{a} થી {b} સુધી', completedOn:'{d}એ પૂર્ણ થયું',
+    summaryTitle:'આજનો સારાંશ', day:'દિવસ', regular:'રેગ્યુલર', extra:'વધારાની', totalLbl:'કુલ', bagsByFloor:'માળ મુજબ બેગ', floorCol:'માળ',
+    noLaundryToday:'આજે કોઈ હોસ્ટેલનો લોન્ડ્રી દિવસ નથી.', noSubsToday:'આજે હજી કોઈ બેગ આવી નથી.', idTaken:'આ સ્ટાફ આઈડી બીજા નામે નોંધાયેલ છે.', pendingBags:'બાકી બેગ',
+    sync_live:'લાઇવ', sync_connecting:'કનેક્ટ થઈ રહ્યું છે', sync_offline:'ઑફલાઇન', sync_device:'ફક્ત આ ડિવાઇસ', syncTitle:'સિંક સ્થિતિ',
+    syncLiveMsg:'લાઇવ: બધા ડિવાઇસ પર એકસરખો ડેટા દેખાય છે.', syncOfflineMsg:'સિંક સર્વર સાથે જોડાણ નથી. તમારા ફેરફારો આ ડિવાઇસ પર સાચવેલા છે અને જોડાણ પાછું આવતાં આપમેળે સિંક થશે.',
+    syncDeviceMsg:'અહીં શેર્ડ સિંક ઉપલબ્ધ નથી, તેથી ડેટા ફક્ત આ ડિવાઇસ પર રહેશે.', lastSynced:'છેલ્લું સિંક: {t}'
+  }
+};
+const ITEM_T = {
+  shirts:{hi:'शर्ट/टी-शर्ट/स्वेटशर्ट', gu:'શર્ટ/ટી-શર્ટ/સ્વેટશર્ટ'},
+  jeans:{hi:'जींस/लोअर', gu:'જીન્સ/લોઅર'},
+  towels:{hi:'तौलिया/नैपकिन', gu:'ટુવાલ/નેપકિન'},
+  bedsheets:{hi:'चादरें', gu:'ચાદરો'},
+  pillow:{hi:'तकिये का कवर', gu:'ઓશીકાનું કવર'},
+  blankets:{hi:'कंबल', gu:'ધાબળા'},
+  comforter:{hi:'रज़ाई', gu:'રજાઈ'},
+  jacket:{hi:'जैकेट', gu:'જેકેટ'},
+  dry:{hi:'ड्राई क्लीनिंग', gu:'ડ્રાય ક્લીનિંગ'},
+  shoes:{hi:'जूते', gu:'જૂતાં'}
+};
+const ISSUE_T = {Stain:{hi:'दाग', gu:'ડાઘ'}, Torn:{hi:'फटा हुआ', gu:'ફાટેલું'}, Faded:{hi:'रंग उड़ा हुआ', gu:'રંગ ઝાંખો'}, Others:{hi:'अन्य', gu:'અન્ય'}};
+const PAY_T = {Cash:{hi:'नकद', gu:'રોકડ'}, UPI:{hi:'UPI', gu:'UPI'}, Card:{hi:'कार्ड', gu:'કાર્ડ'}};
+const HOSTEL_T = {'Mayflower':{hi:'मेफ्लावर', gu:'મેફ્લાવર'}, 'Faculty Housing':{hi:'फैकल्टी हाउसिंग', gu:'ફેકલ્ટી હાઉસિંગ'}};
+const LOCALE = {en:'en-IN', hi:'hi-IN', gu:'gu-IN'};
+
+/* ================= icons ================= */
+function svg(p, sw){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + (sw || 2) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + p + '</svg>'; }
+const I = {
+  back: svg('<path d="M19 12H5"/><path d="m12 19-7-7 7-7"/>', 2.2),
+  expand: svg('<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/>', 2.4),
+  close: svg('<path d="M18 6 6 18M6 6l12 12"/>', 2.4),
+  chevR: svg('<path d="m9 18 6-6-6-6"/>', 2.2),
+  down: svg('<path d="M6 9l6 6 6-6"/>', 2.2),
+  up: svg('<path d="M18 15l-6-6-6 6"/>', 2.2),
+  camera: svg('<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/>'),
+  plus: svg('<path d="M12 5v14M5 12h14"/>', 2.4),
+  minus: svg('<path d="M5 12h14"/>', 2.4),
+  x: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>',
+  washer: svg('<rect width="18" height="20" x="3" y="2" rx="2"/><path d="M3 6h18"/><path d="M7 4h.01M10 4h.01"/><circle cx="12" cy="13" r="5"/><path d="M12 18a2.5 2.5 0 0 0 0-5 2.5 2.5 0 0 1 0-5"/>'),
+  shirt: svg('<path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>'),
+  megaphone: svg('<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>'),
+  search: svg('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
+  alert: svg('<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>'),
+  building: svg('<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/>'),
+  clipboard: svg('<rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/>'),
+  sparkles: svg('<path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>'),
+  cash: svg('<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>'),
+  phone: svg('<rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/>'),
+  card: svg('<rect width="20" height="14" x="2" y="5" rx="2"/><path d="M2 10h20"/>'),
+  user: svg('<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>'),
+  history: svg('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>'),
+  logout: svg('<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>'),
+  book: svg('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'),
+  check: svg('<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>'),
+  xcircle: svg('<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>'),
+  calendar: svg('<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>'),
+  layers: svg('<path d="m12 2 10 5-10 5L2 7l10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>'),
+  grid: svg('<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>'),
+  door: svg('<path d="M18 20V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v14"/><path d="M2 20h20"/><path d="M14 12v.01"/>'),
+  send: svg('<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>'),
+  arrowR: svg('<path d="M5 12h14M12 5l7 7-7 7"/>'),
+  bell: svg('<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>'),
+  cap: svg('<path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/>'),
+  briefcase: svg('<rect width="20" height="14" x="2" y="7" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'),
+  lock: svg('<rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'),
+  globe: svg('<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>')
+};
+/* Woosh! logo: washing-machine porthole with spinning water, speed lines behind.
+   One colour (currentColor) so it works white on the headers and blue on light. */
+function logo(size, key){
+  const id = 'wd-' + key;
+  return '<svg class="logo" viewBox="0 0 64 64" width="' + size + '" height="' + size + '" fill="none" aria-hidden="true">' +
+    '<defs><clipPath id="' + id + '"><circle cx="39" cy="32" r="15.5"/></clipPath></defs>' +
+    '<path d="M6 21.5h8M2 32h12.5M6 42.5h8" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/><circle cx="39" cy="32" r="20.5" stroke="currentColor" stroke-width="5"/><g clip-path="url(#' + id + ')"><path d="M21 33c3.2-4.2 6.4-4.2 9.6 0s6.4 4.2 9.6 0 6.4-4.2 9.6 0 6.4 4.2 9.6 0V52H21z" fill="currentColor" opacity=".45"/></g><path d="M29.5 24.5a11.5 11.5 0 0 1 7-5.4" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>' +
+    '</svg>';
+}
+const TYPE_IC = {done:I.check, resolved:I.check, unresolved:I.xcircle, extra:I.sparkles, closure:I.calendar, lf:I.search, issue:I.alert, found:I.check};
+
+/* ================= data ================= */
+/* Three storage modes, picked automatically at start-up and shown on screen:
+   platform: claude.ai's shared db (inside the claude.ai viewer; signed-in org members)
+   public:   textdb.dev JSON store + ntfy.sh push pings (any other host, or the file opened directly)
+   local:    this device only (only when neither shared option is reachable) */
+const COLS = ['students','staff','bags','extras','issues','lostFound','announcements','closures'];
+const TIMELINE = ['bags','extras','issues','lostFound','announcements'];
+const LIVE_SCREENS = ['entry','s-landing','s-history','s-announcements','t-landing','t-floor','t-cart','t-lostfound','t-complaints','t-announcements','t-extras'];
+const PUB = {api:'https://textdb.dev/api/data/', push:'https://ntfy.sh/', ns:(window.__KAPDE_NS__ || 'woosh-v8-a02c02b83a7b63968ac9')};
+const PKEY = 'kapde_pending_v6';
+const SEP = '\u0001';
+function blankDb(){ return {students:{}, staff:{}, session:null, bags:[], extras:[], issues:[], lostFound:[], announcements:[], closures:[]}; }
+let db = blankDb();
+const Store = {mode:'local', reason:'', status:'connecting', lastSync:0, started:false, cloud:null, loaded:{},
+               queue:{}, pending:{}, inflight:{}, unconfirmed:{}, lastText:{}, flushing:false, esOpen:false};
+
+/* ---------- untrusted-data guard: every record is cleaned before use ---------- */
+const S_ = v => (v == null ? '' : String(v)).slice(0, 2000);
+const N_ = v => { const n = Number(v); return isFinite(n) ? n : 0; };
+const ID_ = v => String(v == null ? '' : v).replace(/[^A-Za-z0-9_\-.:@+]/g, '').slice(0, 80);
+function okPhoto(v){
+  if(typeof v !== 'string') return null;
+  if(/^p:[a-z0-9]{4,40}$/.test(v)) return v;
+  if(/^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(v)) return v;
+  return null;
+}
+function sanitize(col, r){
+  if(!r || typeof r !== 'object' || Array.isArray(r)) return null;
+  const o = {};
+  Object.keys(r).forEach(k => {
+    const v = r[k];
+    if(['ts','u','total','doneTs','closedTs'].includes(k)) o[k] = N_(v);
+    else if(k === 'id' || k === 'ref' || k === 'exclude') o[k] = ID_(v);
+    else if(k === 'items') o[k] = Array.isArray(v) ? v.slice(0, 20).map(i => ({k:ID_(i && i.k), n:S_(i && i.n), qty:N_(i && i.qty), p:N_(i && i.p), photo:okPhoto(i && i.photo)})) : [];
+    else if(k === 'photos') o[k] = Array.isArray(v) ? v.map(okPhoto).filter(Boolean).slice(0, 3) : [];
+    else if(k === 'photo') o[k] = okPhoto(v);
+    else if(k === 'cats') o[k] = Array.isArray(v) ? v.filter(c => ISSUES.includes(c)) : [];
+    else if(k === 'readIds' || k === 'popped') o[k] = Array.isArray(v) ? v.map(ID_).filter(Boolean).slice(-2000) : [];
+    else if(k === 'found') o[k] = v && typeof v === 'object' ? {by:S_(v.by), byStaff:!!v.byStaff, byId:S_(v.byId), ts:N_(v.ts)} : null;
+    else if(k === 'status') o[k] = ['pending','done','received','resolved','unresolved'].includes(v) ? v : 'pending';
+    else if(k === 'method') o[k] = ['Cash','UPI','Card'].includes(v) ? v : 'Cash';
+    else if(k === 'side') o[k] = v === 'Y' ? 'Y' : 'X';
+    else if(k === 'from' || k === 'to') o[k] = /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : '';
+    else if(k === 'lang') o[k] = ['en','hi','gu'].includes(v) ? v : 'en';
+    else if(typeof v === 'string' || typeof v === 'number') o[k] = S_(v);
+  });
+  if(col === 'students') return o.sid ? o : null;
+  if(!o.id) return null;
+  if(col === 'closures' && (!o.from || !o.to)) return null;
+  return o;
+}
+
+/* ---------- this-device storage ---------- */
+function loadSession(){
+  try{ const sr = localStorage.getItem(SKEY); db.session = sr ? JSON.parse(sr) : null; }catch(e){ db.session = null; }
+}
+function saveSession(){
+  try{ if(db.session) localStorage.setItem(SKEY, JSON.stringify(db.session)); else localStorage.removeItem(SKEY); }catch(e){}
+}
+function prune(){
+  const cutoff = Date.now() - MONTH;
+  db.bags = db.bags.filter(b => b.ts >= cutoff);
+  db.extras = db.extras.filter(x => x.ts >= cutoff);
+}
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(raw){ const d = JSON.parse(raw); COLS.forEach(c => { if(d[c]) setCol(c, c === 'students' || c === 'staff' ? d[c] : arrToMap(d[c])); }); }
+  }catch(e){}
+  prune();
+}
+function saveLocal(){
+  try{ const out = {}; COLS.forEach(c => { out[c] = db[c]; }); localStorage.setItem(KEY, JSON.stringify(out)); }
+  catch(e){ if(Store.mode === 'local') toast('Storage is full. Remove a photo and try again.'); }
+}
+function loadPending(){ try{ const p = JSON.parse(localStorage.getItem(PKEY) || '{}'); if(p && typeof p === 'object') Store.pending = p; }catch(e){} }
+function savePending(){ try{ localStorage.setItem(PKEY, JSON.stringify(Store.pending)); }catch(e){} }
+function hasPending(){ return Object.keys(Store.pending).some(c => Object.keys(Store.pending[c] || {}).length); }
+function arrToMap(arr){ const m = {}; (arr || []).forEach(r => { if(r && r.id) m[r.id] = r; }); return m; }
+function keyOf(col, rec){ return col === 'students' ? rec.sid : rec.id; }
+function docId(s){
+  const v = String(s).replace(/[^A-Za-z0-9_\-.~:@+]/g, '_').slice(0, 150);
+  return (!v || v === '.' || v === '..') ? '_' + v : v;
+}
+
+/* ---------- cache ---------- */
+function setCol(col, map){
+  const clean = {};
+  Object.keys(map || {}).forEach(k => { const r = sanitize(col, map[k]); if(r) clean[keyOf(col, r)] = r; });
+  if(col === 'students') db.students = clean;
+  else if(col === 'staff') db.staff = clean;
+  else db[col] = Object.values(clean);
+  if(col === 'bags' || col === 'extras') prune();
+}
+function cacheSet(col, rec){
+  if(col === 'students') db.students[rec.sid] = rec;
+  else if(col === 'staff') db.staff[rec.id] = rec;
+  else { const arr = db[col], i = arr.findIndex(x => x.id === rec.id); if(i < 0) arr.push(rec); else arr[i] = rec; }
+}
+
+/* Write one record: the cache updates at once, then only that record is synced. */
+function put(col, rec){
+  const json = JSON.stringify(rec);
+  if(json.length > 240000){ toast('Photos are too large to save. Remove one and try again.'); return false; }
+  rec.u = Date.now();
+  cacheSet(col, rec);
+  if(Store.mode === 'platform') platformWrite(col, rec);
+  else if(Store.mode === 'public'){
+    (Store.pending[col] = Store.pending[col] || {})[keyOf(col, rec)] = rec;
+    savePending(); saveLocal(); scheduleFlush();
+  }
+  else saveLocal();
+  return true;
+}
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function notify(target, type, title, body, extra){
+  const a = Object.assign({id:uid(), target, type, title, body, ts:Date.now()}, extra || {});
+  put('announcements', a);
+  return a;
+}
+function setStatus(s){
+  if(Store.status === s) return;
+  Store.status = s;
+  if(Store.started) scheduleRender();
+}
+
+/* ---------- platform mode: claude.ai shared db, live snapshots ---------- */
+function platformWrite(col, rec){
+  const path = col + '/' + docId(keyOf(col, rec));
+  const body = JSON.parse(JSON.stringify(rec));
+  const run = () => Store.cloud.doc(path).set(body);
+  const prev = Store.queue[path] || Promise.resolve();
+  Store.queue[path] = prev.then(() => run().catch(e => {
+    if(e && e.code === 'unavailable') return new Promise(r => setTimeout(r, 400 + Math.random() * 600)).then(run);
+    throw e;
+  })).then(() => { Store.lastSync = Date.now(); }).catch(writeFailed);
+}
+function writeFailed(e){
+  const code = e && e.code;
+  if(code === 'invalid_argument' || code === 'not_granted') toast("You have view-only access, so changes can't be saved. Ask the owner for Contributor access.");
+  else if(code === 'quota_exceeded') toast('Shared storage is full. Old records need to be cleared.');
+  else if(code === 'revoked') toast('Access to shared data was removed.');
+  else { setStatus('offline'); toast('Could not sync. Check your connection and try again.'); }
+}
+function connectPlatform(cdb){
+  Store.cloud = cdb; Store.mode = 'platform'; Store.status = 'connecting';
+  COLS.forEach(col => subscribePlatform(col, 0));
+  setTimeout(() => { if(!Store.started) startApp(); }, 12000);
+}
+function subscribePlatform(col, attempt){
+  if(Store.mode !== 'platform') return;
+  const base = Store.cloud.collection(col);
+  const q = TIMELINE.includes(col) ? base.orderBy('ts', 'desc').limit(500) : base.limit(1000);
+  q.onSnapshot(snap => applyPlatform(col, snap), err => {
+    const code = err && err.code;
+    if(['revoked','not_granted','capability_disabled','capability_removed'].includes(code)){ goLocal('denied'); return; }
+    setStatus('offline');
+    if(attempt < 8) setTimeout(() => subscribePlatform(col, attempt + 1), Math.min(15000, 2000 * (attempt + 1)));
+  });
+}
+function applyPlatform(col, snap){
+  if(Store.mode !== 'platform') return;
+  const map = {};
+  snap.docs.forEach(d => { const v = d.data(); if(v){ const r = JSON.parse(JSON.stringify(v)); const k = keyOf(col, r); if(k) map[k] = r; } });
+  setCol(col, map);
+  Store.loaded[col] = true;
+  if(COLS.every(c => Store.loaded[c])){ Store.lastSync = Date.now(); setStatus('live'); }
+  if(!Store.started){ if(COLS.every(c => Store.loaded[c])) startApp(); }
+  else scheduleRender();
+}
+
+/* ---------- public mode: textdb.dev store + ntfy.sh instant pings ---------- */
+function pubUrl(name){ return PUB.api + PUB.ns + '-' + name; }
+async function pubRead(name){
+  const r = await fetch(pubUrl(name), {cache:'no-store'});
+  if(!r.ok) throw new Error('read ' + r.status);
+  return r.text();
+}
+async function pubWrite(name, text){
+  const r = await fetch(pubUrl(name), {method:'POST', headers:{'Content-Type':'text/plain'}, body:text});
+  if(!r.ok) throw new Error('write ' + r.status);
+}
+function parseMap(txt){
+  if(!txt || !txt.trim()) return {};
+  try{ const o = JSON.parse(txt); return o && typeof o === 'object' && !Array.isArray(o) ? o : {}; }catch(e){ return {}; }
+}
+function pruneMap(col, map){
+  if(!TIMELINE.includes(col)) return;
+  const cutoff = Date.now() - MONTH;
+  Object.keys(map).forEach(k => { if(!map[k] || N_(map[k].ts) < cutoff) delete map[k]; });
+}
+/* Show remote data, but keep this device's not-yet-saved changes on top. */
+function viewCol(col, map){
+  const view = Object.assign({}, map);
+  [Store.inflight[col] || {}, Store.pending[col] || {}].forEach(src => {
+    Object.keys(src).forEach(k => { if(!view[k] || N_(view[k].u) < src[k].u) view[k] = src[k]; });
+  });
+  Object.keys(Store.unconfirmed).forEach(key => {
+    const [c, k] = key.split(SEP);
+    if(c === col && (!view[k] || N_(view[k].u) < Store.unconfirmed[key].u)) view[k] = Store.unconfirmed[key];
+  });
+  setCol(col, view);
+}
+/* A later read confirms our writes; if someone else's save overwrote one, re-send it. */
+function applyRemote(col, map){
+  let requeue = false;
+  Object.keys(Store.unconfirmed).forEach(key => {
+    const [c, k] = key.split(SEP);
+    if(c !== col) return;
+    const mine = Store.unconfirmed[key], theirs = map[k];
+    if(!(theirs && N_(theirs.u) >= mine.u)){ (Store.pending[col] = Store.pending[col] || {})[k] = mine; requeue = true; }
+    delete Store.unconfirmed[key];
+  });
+  viewCol(col, map);
+  if(requeue){ savePending(); scheduleFlush(); }
+}
+async function pubFetchCol(col){
+  const txt = await pubRead(col);
+  const waiting = Object.keys(Store.unconfirmed).some(key => key.split(SEP)[0] === col);
+  if(txt === Store.lastText[col] && !waiting) return false;
+  Store.lastText[col] = txt;
+  applyRemote(col, parseMap(txt));
+  return true;
+}
+let flushTimer = null;
+function scheduleFlush(delay){ clearTimeout(flushTimer); flushTimer = setTimeout(flush, delay == null ? 120 : delay); }
+async function flush(){
+  if(Store.mode !== 'public') return;
+  if(Store.flushing){ scheduleFlush(300); return; }
+  const cols = Object.keys(Store.pending).filter(c => Object.keys(Store.pending[c] || {}).length);
+  if(!cols.length) return;
+  Store.flushing = true;
+  const done = []; let failed = false;
+  for(const col of cols){
+    const mine = Store.pending[col]; Store.pending[col] = {}; Store.inflight[col] = mine;
+    try{
+      for(const k of Object.keys(mine)) await externalizePhotos(mine[k]);
+      const remote = parseMap(await pubRead(col));
+      Object.keys(mine).forEach(k => { const r = remote[k]; if(!r || N_(r.u) <= mine[k].u) remote[k] = mine[k]; });
+      pruneMap(col, remote);
+      const outTxt = JSON.stringify(remote);
+      await pubWrite(col, outTxt);
+      Store.lastText[col] = outTxt;
+      Object.keys(mine).forEach(k => { Store.unconfirmed[col + SEP + k] = mine[k]; });
+      viewCol(col, remote);
+      done.push(col);
+    }catch(e){
+      Store.pending[col] = Object.assign(mine, Store.pending[col] || {});
+      failed = true;
+    }
+    delete Store.inflight[col];
+  }
+  Store.flushing = false;
+  savePending(); saveLocal();
+  if(done.length){ ping(done); Store.lastSync = Date.now(); setStatus('live'); scheduleRender(); schedulePoll(1500); }
+  if(failed){ setStatus('offline'); scheduleFlush(4000); }
+  else if(hasPending()) scheduleFlush(150);
+}
+async function pollAll(){
+  try{
+    const changed = (await Promise.all(COLS.map(pubFetchCol))).some(Boolean);
+    Store.lastSync = Date.now(); setStatus('live');
+    if(changed){ saveLocal(); scheduleRender(); }
+    if(hasPending()) scheduleFlush(50);
+    return true;
+  }catch(e){ setStatus('offline'); return false; }
+}
+let pollTimer = null;
+function schedulePoll(ms){
+  clearTimeout(pollTimer);
+  pollTimer = setTimeout(async () => { await pollAll(); schedulePoll(); },
+    ms != null ? ms : (document.hidden ? 20000 : (Store.esOpen ? 8000 : 3000)));
+}
+function ping(cols){ try{ fetch(PUB.push + PUB.ns, {method:'POST', body:cols.join(',')}).catch(() => {}); }catch(e){} }
+function listen(){
+  if(typeof EventSource === 'undefined') return;
+  try{
+    const es = new EventSource(PUB.push + PUB.ns + '/sse');
+    es.onopen = () => { Store.esOpen = true; };
+    es.onerror = () => { Store.esOpen = false; };
+    es.onmessage = ev => {
+      let d = null; try{ d = JSON.parse(ev.data); }catch(e){ return; }
+      if(!d || d.event !== 'message' || !d.message) return;
+      const cols = String(d.message).split(',').filter(c => COLS.includes(c));
+      if(!cols.length) return;
+      Promise.all(cols.map(pubFetchCol)).then(res => { Store.lastSync = Date.now(); setStatus('live'); if(res.some(Boolean)){ saveLocal(); scheduleRender(); } }).catch(() => {});
+    };
+  }catch(e){}
+}
+async function startPublic(){
+  Store.mode = 'public'; Store.status = 'connecting';
+  loadLocal(); loadPending();
+  const ok = await Promise.race([pollAll(), new Promise(r => setTimeout(() => r(false), 8000))]);
+  startApp();
+  if(!ok) setStatus('offline');
+  listen();
+  schedulePoll();
+  if(hasPending()) scheduleFlush(50);
+  document.addEventListener('visibilitychange', () => { if(!document.hidden) schedulePoll(0); });
+}
+function goLocal(reason){
+  Store.mode = 'local'; Store.reason = reason; Store.cloud = null; Store.status = 'device';
+  loadLocal();
+  if(!Store.started) startApp(); else scheduleRender();
+}
+
+/* ---------- photos: stored as their own records in public mode ---------- */
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const photoCache = {}, photoLoading = {};
+async function storePhoto(d){
+  const id = uid();
+  await pubWrite('photo-' + id, d);
+  photoCache[id] = d;
+  return 'p:' + id;
+}
+/* Called by the sync queue: inline photos are uploaded to their own keys and the
+   record keeps only a small reference, so the shared lists stay fast to load. */
+async function externalizePhotos(rec){
+  if(Array.isArray(rec.items)) for(const i of rec.items){ if(i && typeof i.photo === 'string' && i.photo.startsWith('data:')) i.photo = await storePhoto(i.photo); }
+  if(Array.isArray(rec.photos)) for(let n = 0; n < rec.photos.length; n++){ if(typeof rec.photos[n] === 'string' && rec.photos[n].startsWith('data:')) rec.photos[n] = await storePhoto(rec.photos[n]); }
+  if(typeof rec.photo === 'string' && rec.photo.startsWith('data:')) rec.photo = await storePhoto(rec.photo);
+}
+function loadPhoto(id){
+  if(photoCache[id]) return Promise.resolve(photoCache[id]);
+  if(!photoLoading[id]){
+    photoLoading[id] = pubRead('photo-' + id).then(txt => {
+      const d = (txt || '').trim();
+      if(okPhoto(d) && d.startsWith('data:')) photoCache[id] = d;
+      delete photoLoading[id];
+      return photoCache[id] || null;
+    }).catch(() => { delete photoLoading[id]; return null; });
+  }
+  return photoLoading[id];
+}
+function hydratePhotos(scope){
+  if(!scope || Store.mode !== 'public') return;
+  scope.querySelectorAll('img[data-pref]').forEach(img => {
+    const id = img.getAttribute('data-pref');
+    loadPhoto(id).then(d => { if(d && img.isConnected){ img.src = d; img.removeAttribute('data-pref'); } });
+  });
+}
+
+let renderQueued = false;
+function scheduleRender(){
+  if(renderQueued) return;
+  renderQueued = true;
+  setTimeout(() => { renderQueued = false; if(Store.started && LIVE_SCREENS.includes(ui.screen)) render(); }, 60);
+}
+
+/* ================= ui state ================= */
+const ui = {screen:'entry', params:{}, last:null, lang:'en', modal:null, cam:null, preview:null, authMode:'signup'};
+function resetDrafts(){
+  ui.form = {}; ui.regular = {}; ui.extra = {}; ui.open = {};
+  ui.lf = {photos:[], desc:''};
+  ui.issue = {cats:[], other:'', photo:null, dd:false};
+  ui.ctab = 'received'; ui.xtab = 'pending'; ui.busy = false; ui.cartLoaded = null;
+}
+resetDrafts();
+
+/* ================= helpers ================= */
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function me(){
+  if(!db.session || db.session.role !== 'student') return null;
+  const st = db.students[db.session.id];
+  if(st){ st.readIds = st.readIds || []; st.popped = st.popped || []; }
+  return st || null;
+}
+function staffMe(){ return db.session && db.session.role === 'staff' ? (db.staff[db.session.id] || null) : null; }
+function isStaffScreen(){ return ui.screen.startsWith('t-'); }
+function lang(){ const s = staffMe(); return (s && s.lang) || ui.lang || 'en'; }
+function t(key, vars){
+  let s = (T[lang()] && T[lang()][key]) || T.en[key] || key;
+  if(vars) Object.keys(vars).forEach(k => { s = s.split('{' + k + '}').join(vars[k]); });
+  return s;
+}
+function trMap(map, key){ const l = lang(); return l === 'en' ? key : ((map[key] && map[key][l]) || key); }
+function itemName(i){ const l = lang(); return (l !== 'en' && i.k && ITEM_T[i.k] && ITEM_T[i.k][l]) || i.n; }
+function fmtDT(ts, staff){
+  const loc = staff ? LOCALE[lang()] : 'en-IN';
+  const d = new Date(ts);
+  return d.toLocaleDateString(loc, {day:'numeric', month:'short'}) + ', ' + d.toLocaleTimeString(loc, {hour:'numeric', minute:'2-digit'});
+}
+function fmtDay(iso, staff){
+  const p = iso.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2]).toLocaleDateString(staff ? LOCALE[lang()] : 'en-IN', {day:'numeric', month:'short', year:'numeric'});
+}
+function initial(name){ return (String(name || '?').trim().charAt(0) || '?').toUpperCase(); }
+function bedsheetDay(){ const d = new Date().getDate(); return d === 1 || d === 15; }
+const DAY_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function dayNames(h){ return (LAUNDRY_DAYS[h] || []).slice().sort((a,b) => ((a+6)%7) - ((b+6)%7)).map(d => DAY_SHORT[d]).join(', '); }
+function laundryDayToday(st){ return !!st && (LAUNDRY_DAYS[st.hostel] || []).includes(new Date().getDay()); }
+function fmtNext(d){ return d.toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'short'}); }
+/* Returns why the Regular cart can't be submitted right now, or null if it can. */
+function inSubmitWindow(){ const h = new Date().getHours(); return h >= 16 && h < 20; }
+/* Checks run in order and only the first failure is shown:
+   1. hostel laundry day (bedsheets alone are fine on the 1st/15th, rule 5)
+   2. bedsheets only on the 1st/15th
+   3. submissions only 4 PM to 8 PM */
+function submitProblem(items, st){
+  const day = laundryDayToday(st), bed = bedsheetDay();
+  const hasBed = items.some(i => i.k === 'bedsheets'), hasOther = items.some(i => i.k !== 'bedsheets');
+  if(!day && !(bed && !hasOther)){
+    return {title:'Not your laundry day today!', body: bed ? 'Only bedsheets can be submitted today (1st/15th rule). Remove the other items to send the bedsheets now.' : ''};
+  }
+  if(hasBed && !bed) return {title:"Bedsheets can't be submitted today", body:'Bedsheets are accepted only on the 1st and 15th of the month. Remove them to submit the rest of your cart.'};
+  if(!inSubmitWindow()) return {title:'Submissions are only open between 4 PM and 8 PM.', body:''};
+  return null;
+}
+function cartKey(){ const st = me(); return st ? 'kapde_cart_' + st.sid : null; }
+function saveCart(){
+  const k = cartKey(); if(!k) return;
+  try{ if(regularTotal()) localStorage.setItem(k, JSON.stringify(ui.regular)); else localStorage.removeItem(k); }catch(e){}
+}
+function loadCart(){
+  const k = cartKey();
+  if(!k || regularTotal() || ui.cartLoaded === k) return;
+  ui.cartLoaded = k;
+  try{
+    const c = JSON.parse(localStorage.getItem(k) || 'null');
+    if(c && typeof c === 'object'){
+      const out = {}; let total = 0;
+      REGULAR.forEach(it => {
+        const v = c[it.k], q = Math.max(0, Math.min(MAX_REGULAR - total, Math.floor(N_(v && v.qty))));
+        if(q > 0 && (it.k !== 'bedsheets' || bedsheetDay())){ out[it.k] = {qty:q, photo:okPhoto(v.photo)}; total += q; }
+      });
+      ui.regular = out;
+    }
+  }catch(e){}
+}
+function nextLaundryDay(st){
+  for(let i = 1; i <= 7; i++){ const d = new Date(); d.setDate(d.getDate() + i); if((LAUNDRY_DAYS[st.hostel] || []).includes(d.getDay())) return d; }
+  return null;
+}
+function cartOf(kind){ return kind === 'regular' ? ui.regular : ui.extra; }
+function regularTotal(){ return Object.values(ui.regular).reduce((s,c) => s + c.qty, 0); }
+function extraTotal(){ return EXTRA.reduce((s,it) => s + ((ui.extra[it.k] || {}).qty || 0) * it.p, 0); }
+function feedFor(st){
+  return db.announcements.filter(a => a.target === 'all' ? a.exclude !== st.sid : a.target === st.sid).sort((a,b) => b.ts - a.ts);
+}
+function unread(st){ return feedFor(st).filter(a => !st.readIds.includes(a.id)).length; }
+function itemsText(items){ return items.map(i => i.n + ' × ' + i.qty).join(', '); }
+function itemsTextStaff(items){ return items.map(i => itemName(i) + ' × ' + i.qty).join(', '); }
+function issueText(i){ return i.cats.map(c => c === 'Others' && i.other ? 'Others: ' + i.other : c).join(', '); }
+function issueTextStaff(i){ return i.cats.map(c => c === 'Others' && i.other ? trMap(ISSUE_T,'Others') + ': ' + i.other : trMap(ISSUE_T,c)).join(', '); }
+function roomLabel(r){ return r.hostel + (r.wing ? ' · ' + r.wing + ' Wing' : '') + ' · Room ' + r.room + ' ' + r.side; }
+function roomLabelStaff(r){ return trMap(HOSTEL_T, r.hostel) + (r.wing ? ' · ' + t('wing',{w:r.wing}) : '') + ' · ' + t('room',{r:r.room + ' ' + r.side}); }
+
+/* ================= toast, notification, modal ================= */
+let toastTimer = null, notifTimer = null;
+function toast(msg){
+  const host = document.getElementById('toast');
+  host.innerHTML = '<div class="toast" role="status">' + esc(msg) + '</div>';
+  const el = host.firstChild;
+  requestAnimationFrame(() => el.classList.add('show'));
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+}
+function nativeNotify(title, body){
+  try{
+    if(!('Notification' in window)) return;
+    const fire = () => { try{ new Notification(title, {body}); }catch(e){} };
+    if(Notification.permission === 'granted') fire();
+    else if(Notification.permission === 'default'){
+      const p = Notification.requestPermission();
+      if(p && p.then) p.then(r => { if(r === 'granted') fire(); }).catch(() => {});
+    }
+  }catch(e){}
+}
+function sysNotify(title, body, icon){
+  const host = document.getElementById('notif');
+  host.innerHTML = '<div class="notif" role="status" data-act="notif-close"><div class="ann-ic">' + (icon || I.bell) + '</div><div class="grow"><div class="app">Woosh! · now</div><div class="tt">' + esc(title) + '</div><div class="bd">' + esc(body) + '</div></div></div>';
+  const el = host.firstChild;
+  requestAnimationFrame(() => el.classList.add('show'));
+  clearTimeout(notifTimer);
+  notifTimer = setTimeout(() => hideNotif(el), 4000);
+  nativeNotify(title, body);
+}
+function hideNotif(el){
+  if(!el) return;
+  el.classList.remove('show');
+  setTimeout(() => { if(el.parentNode) el.parentNode.removeChild(el); }, 250);
+}
+function showModal(m){ ui.modal = m; renderModal(); }
+function closeModal(){ ui.modal = null; renderModal(); }
+function renderModal(){
+  const root = document.getElementById('modal-root');
+  const m = ui.modal;
+  if(!m){ root.innerHTML = ''; return; }
+  const btns = m.buttons || [];
+  root.innerHTML =
+    '<div class="backdrop' + (m.sheet ? ' sheet' : '') + '" data-act="backdrop"><div class="modal' + (m.sheet ? ' sheet' : '') + '" role="dialog" aria-modal="true"' + (m.title ? ' aria-label="' + esc(m.title) + '"' : '') + '>' +
+    (m.sheet ? '<div class="handle" aria-hidden="true"></div>' : '') +
+    (m.title ? '<h2>' + esc(m.title) + '</h2>' : '') + (m.body || '') +
+    (btns.length ? '<div class="mbtns' + (m.column ? ' col' : '') + '">' +
+      btns.map((b,i) => '<button class="btn btn-' + (b.kind || 'soft') + '" data-act="mbtn" data-i="' + i + '">' + (b.icon || '') + '<span>' + esc(b.label) + '</span></button>').join('') +
+    '</div>' : '') +
+    '</div></div>';
+  hydratePhotos(root);
+}
+function modalBtn(i){
+  const m = ui.modal; if(!m) return;
+  const b = m.buttons[i];
+  const r = b && b.fn ? b.fn() : undefined;
+  if(r !== false && ui.modal === m) closeModal();
+}
+
+/* ================= full-screen photo viewer ================= */
+function openLightbox(btn){
+  const img = btn.querySelector('img'), ref = btn.getAttribute('data-ref');
+  const cur = img ? img.getAttribute('src') : '';
+  const src = cur && cur.startsWith('data:image/') && okPhoto(cur) ? cur : BLANK;
+  const lb = document.getElementById('lightbox');
+  lb.innerHTML = '<div class="lb" data-act="lb-close" role="dialog" aria-modal="true" aria-label="Photo">' +
+    '<img class="lb-img" alt="Photo" src="' + src + '">' +
+    '<button class="lb-x" data-act="lb-close" aria-label="Close photo">' + I.close + '</button>' +
+    '<div class="lb-hint">Tap outside the photo to close</div></div>';
+  if(ref && src === BLANK) loadPhoto(ref).then(d => { const im = lb.querySelector('.lb-img'); if(d && im) im.src = d; });
+  ui.lbReturn = btn;
+  const x = lb.querySelector('.lb-x'); if(x) x.focus();
+}
+function closeLightbox(){
+  const lb = document.getElementById('lightbox');
+  if(!lb.innerHTML) return;
+  lb.innerHTML = '';
+  if(ui.lbReturn && ui.lbReturn.isConnected) ui.lbReturn.focus();
+  ui.lbReturn = null;
+}
+
+/* ================= page shell ================= */
+function page(o){
+  let h = '<div class="screen"><header class="topbar">';
+  if(o.back) h += '<button class="icon-btn" data-act="back" aria-label="Back">' + I.back + '</button>';
+  if(o.logo) h += '<span class="bar-logo">' + logo(30, 'bar') + '</span>';
+  h += '<h1>' + esc(o.title) + '</h1>' + (o.right || '') + '</header>';
+  h += '<main class="content' + (o.fit ? ' fit' : '') + '">' + (o.body || '') + '</main>';
+  if(o.actions) h += '<div class="actions">' + o.actions + '</div>';
+  if(o.rules) h += '<footer class="rules-bar"><button class="btn btn-soft" data-act="rules">' + I.book + '<span>View Laundry Rules</span></button></footer>';
+  return h + '</div>';
+}
+function input(label, key, type, ph, extra){
+  return '<div class="field"><label for="f-' + key + '">' + esc(label) + '</label><input class="input" id="f-' + key + '" data-bind="' + key + '" type="' + type + '" placeholder="' + esc(ph) + '" value="' + esc(ui.form[key] || '') + '" ' + (extra || '') + '></div>';
+}
+function listBtn(attrs, icon, label, cls, sub){
+  return '<button class="row-btn" ' + attrs + '><span class="row-ic">' + icon + '</span><span class="row-txt"><span class="row-t">' + esc(label) + '</span>' +
+    (sub ? '<span class="row-s">' + esc(sub) + '</span>' : '') + '</span><span class="row-chev">' + I.chevR + '</span></button>';
+}
+/* soft hyphens: long English labels break as 'Announce-ments' only when a tile is too narrow */
+const SOFT_HY = {'Announcements':'Announce\u00ADments', 'Complaints':'Com\u00ADplaints'};
+function tile(to, icon, label, badge, tone){
+  return '<button class="tile' + (tone ? ' tone-' + tone : '') + '" data-act="go" data-to="' + to + '">' + (badge ? '<span class="badge" aria-label="' + badge + ' unread">' + badge + '</span>' : '') + '<span class="tile-ic">' + icon + '</span><span class="tile-l">' + esc(SOFT_HY[label] || label) + '</span></button>';
+}
+const SYNC_EN = {live:'Live', connecting:'Connecting', offline:'Offline', device:'This device only'};
+function syncChip(light){
+  const s = Store.status, staff = isStaffScreen();
+  const label = staff ? t('sync_' + s) : SYNC_EN[s];
+  const cls = s === 'live' ? 'ok' : (s === 'connecting' ? 'warn' : 'off');
+  return '<button class="sync ' + cls + (light ? ' light' : '') + '" data-act="sync-info" aria-label="' +
+    esc((staff ? t('syncTitle') : 'Sync status') + ': ' + label) + '"><span class="dot" aria-hidden="true"></span><span>' + esc(label) + '</span></button>';
+}
+function showSyncInfo(){
+  const staff = isStaffScreen(), s = Store.status;
+  const time = Store.lastSync ? new Date(Store.lastSync).toLocaleTimeString(staff ? LOCALE[lang()] : 'en-IN', {hour:'numeric', minute:'2-digit', second:'2-digit'}) : '';
+  let msg;
+  if(staff){
+    msg = s === 'live' ? t('syncLiveMsg') : (s === 'device' ? t('syncDeviceMsg') : (s === 'offline' ? t('syncOfflineMsg') : t('sync_connecting')));
+  } else if(s === 'live'){
+    msg = Store.mode === 'platform'
+      ? 'Live. Data is shared through claude.ai with everyone in your organization who opens this link while signed in.'
+      : 'Live. Everyone who opens this app sees the same data, on any phone or computer.';
+  } else if(s === 'offline'){
+    msg = "Can't reach the sync server right now. Your changes are saved on this device and will sync automatically when the connection is back.";
+  } else if(s === 'device'){
+    msg = Store.reason === 'viewer'
+      ? "This claude.ai view didn't provide shared storage, and claude.ai links block outside sync servers, so data stays on this device. Open the link in a web browser while signed in to claude.ai, or use the self-hosted app file."
+      : (Store.reason === 'denied' ? "Access to shared data wasn't granted here, so data stays on this device. Ask the owner for Contributor access."
+                                   : "Shared sync isn't available here, so data stays on this device.");
+  } else msg = 'Connecting to shared data…';
+  const pend = Object.values(Store.pending).reduce((n, m) => n + Object.keys(m || {}).length, 0);
+  showModal({title: staff ? t('syncTitle') : 'Sync status', dismissible:true, sheet:true,
+    body:'<p>' + esc(msg) + '</p>' +
+      (time ? '<p>' + esc(staff ? t('lastSynced', {t:time}) : 'Last synced: ' + time) + '</p>' : '') +
+      (pend && !staff ? '<p>' + pend + (pend === 1 ? ' change is' : ' changes are') + ' waiting to sync.</p>' : ''),
+    buttons:[{label: staff ? t('ok') : 'OK', kind:'accent'}]});
+}
+function photoSrc(src){
+  const v = okPhoto(src);
+  if(!v) return {src:BLANK, ref:''};
+  if(v.startsWith('p:')){ const id = v.slice(2); return photoCache[id] ? {src:photoCache[id], ref:''} : {src:BLANK, ref:id}; }
+  return {src:v, ref:''};
+}
+function thumb(src, rm){
+  const ph = photoSrc(src);
+  return '<div class="thumb"><button class="thumb-btn" data-act="zoom"' + (ph.ref ? ' data-ref="' + ph.ref + '"' : '') + ' aria-label="View photo full screen"><img src="' + ph.src + '"' + (ph.ref ? ' data-pref="' + ph.ref + '"' : '') + ' alt=""><span class="thumb-zoom" aria-hidden="true">' + I.expand + '</span></button>' +
+    (rm ? '<button class="x" data-act="rm-photo" data-kind="' + rm.kind + '" data-k="' + (rm.k || '') + '" data-i="' + (rm.i || 0) + '" aria-label="Remove photo">' + I.x + '</button>' : '') + '</div>';
+}
+function photoStrip(list){ return list && list.length ? '<div class="photos">' + list.map(p => thumb(p)).join('') + '</div>' : ''; }
+function itemRow(kind, it){
+  const c = cartOf(kind)[it.k] || {qty:0, photo:null};
+  const locked = kind === 'regular' && it.k === 'bedsheets' && !bedsheetDay();
+  const key = kind + ':' + it.k, tipId = 'tip-' + kind + '-' + it.k;
+  const tipOn = locked && ui.tip === key;
+  const hint = locked ? '<span class="pr hint lk">' + I.lock + 'Only on the 1st and 15th</span>' : '';
+  const open = !locked && !!ui.open[key];
+  const a = 'data-kind="' + kind + '" data-k="' + it.k + '"';
+  let h = '<div class="item' + (locked ? ' locked' : '') + (open ? ' open' : '') + '">' +
+    '<button class="item-head" data-act="toggle" ' + a +
+      (locked ? ' aria-disabled="true" title="Bedsheets can only be added on the 1st and 15th of the month."' + (tipOn ? ' aria-describedby="' + tipId + '"' : '') : ' aria-expanded="' + open + '"') + '>' +
+      '<span><span class="nm">' + esc(it.n) + '</span>' + (it.p ? '<span class="pr">₹' + it.p + '</span>' : '') + hint + '</span>' +
+      '<span class="rt">' + (c.qty ? '<span class="q">' + c.qty + '</span>' : '') + (locked ? '' : (open ? I.up : I.down)) + '</span>' +
+    '</button>' +
+    (tipOn ? '<div class="tip" id="' + tipId + '" role="tooltip">Bedsheets are accepted only on the 1st and 15th of the month. They can be added to your cart on those dates.</div>' : '');
+  if(open){
+    h += '<div class="item-body"><div class="body-row"><div class="stepper">' +
+        '<button class="step" data-act="step" ' + a + ' data-d="-1" aria-label="Decrease">' + I.minus + '</button>' +
+        '<span class="qty">' + c.qty + '</span>' +
+        '<button class="step" data-act="step" ' + a + ' data-d="1" aria-label="Increase">' + I.plus + '</button>' +
+      '</div><button class="cam" data-act="cam" ' + a + ' aria-label="Take a photo">' + I.camera + '<span>Photo</span></button></div>' +
+      (c.photo ? '<div class="photos">' + thumb(c.photo, {kind, k:it.k}) + '</div>' : '') + '</div>';
+  }
+  return h + '</div>';
+}
+function lfFoundBlock(lf, staffView){
+  if(lf.found){
+    return '<div class="card-actions"><span class="state">' + I.check + '<span>' +
+      esc(staffView ? t('foundBy',{n:lf.found.by}) : 'Found by ' + lf.found.by) + '</span></span></div>';
+  }
+  return '<div class="card-actions"><span></span><button class="btn btn-outline btn-sm" data-act="found" data-id="' + esc(lf.id) + '">' + I.check + '<span>' + esc(staffView ? t('found') : 'Found') + '</span></button></div>';
+}
+
+/* ================= screens ================= */
+const S = {};
+
+S['entry'] = () =>
+  '<div class="screen"><div class="entry">' +
+  '<div class="brand-mark" aria-hidden="true">' + logo(46, 'entry') + '</div>' +
+  '<h1 class="brand">Woosh!</h1>' +
+  '<p class="brand-sub">Laundry app for Anant Student Residences</p>' +
+  '<div class="role-row">' +
+  '<button class="btn btn-student role-card" data-act="role" data-v="student"><span class="rc-ic">' + I.cap + '</span><span><span class="rc-t">Student</span><span class="rc-s">Send and track your laundry</span></span></button>' +
+  '<button class="btn btn-staff role-card" data-act="role" data-v="staff"><span class="rc-ic">' + I.briefcase + '</span><span><span class="rc-t">Staff</span><span class="rc-s">Manage bags and requests</span></span></button>' +
+  '</div><div class="sync-row">' + syncChip(true) + '</div></div></div>';
+
+/* ---------- student ---------- */
+S['s-onboard'] = () => {
+  const f = ui.form, sh1 = f.hostel === 'SH-1', mode = ui.authMode;
+  const tabs = '<div class="tabs">' + [['signup','Sign Up'],['login','Log In']].map(m =>
+    '<button class="btn ' + (mode === m[0] ? 'btn-accent' : 'btn-outline') + '" data-act="auth-mode" data-v="' + m[0] + '" aria-pressed="' + (mode === m[0]) + '">' + m[1] + '</button>').join('') + '</div>';
+  if(mode === 'login'){
+    return page({title:'Student Login', back:true,
+      body: tabs + input('Student ID','sid','text','e.g. 12345678','autocomplete="username"') +
+        input('College Email','email','email','name@college.edu','autocomplete="email" autocapitalize="off"'),
+      actions:'<button class="btn btn-accent" data-act="student-login">' + I.send + '<span>Log In</span></button>'});
+  }
+  const body = tabs +
+    input('Name','name','text','Your full name','autocomplete="name"') +
+    input('Student ID','sid','text','e.g. 12345678','autocomplete="off"') +
+    '<div class="field"><label for="f-hostel">Hostel</label><select class="input" id="f-hostel" data-bind="hostel"><option value="">Select hostel</option>' +
+      HOSTELS.map(h => '<option' + (f.hostel === h ? ' selected' : '') + '>' + h + '</option>').join('') + '</select></div>' +
+    (sh1 ? '<div class="field"><label>Wing</label><div class="seg">' + WINGS.map(w =>
+      '<button class="btn ' + (f.wing === w ? 'btn-accent' : 'btn-outline') + '" data-act="wing-pick" data-v="' + w + '" aria-pressed="' + (f.wing === w) + '">' + w + '</button>').join('') + '</div></div>' : '') +
+    '<div class="field"><label for="f-room">Room Number</label><div class="room-row">' +
+      '<input class="input" id="f-room" data-bind="room" type="text" inputmode="numeric" maxlength="3" placeholder="' + (sh1 ? 'e.g. 101' : 'e.g. 201') + '" value="' + esc(f.room || '') + '">' +
+      ['X','Y'].map(s => '<button class="btn ' + (f.side === s ? 'btn-accent' : 'btn-outline') + '" data-act="side" data-v="' + s + '" aria-pressed="' + (f.side === s) + '">' + s + '</button>').join('') +
+    '</div></div>' +
+    input('Batch','batch','text','e.g. 2024-2028','autocomplete="off"') +
+    input('College Email','email','email','name@college.edu','autocomplete="email" autocapitalize="off"');
+  return page({title:'Student Login', back:true, body, actions:'<button class="btn btn-accent" data-act="onboard-submit">' + I.send + '<span>Submit</span></button>'});
+};
+
+S['s-landing'] = () => {
+  const st = me(), n = unread(st), today = laundryDayToday(st), nd = today ? null : nextLaundryDay(st);
+  const first = String(st.name || '').trim().split(/\s+/)[0];
+  const place = st.hostel + (st.wing ? ', ' + st.wing + ' Wing' : '') + ', Room ' + st.room + ' ' + st.side;
+  const day = today
+    ? '<div class="dc-t">Today is your laundry day</div><div class="dc-s">' + windowNote() + '.</div>'
+    : '<div class="dc-t">Next laundry day: ' + esc(nd ? fmtNext(nd) : dayNames(st.hostel)) + '</div><div class="dc-s">' + esc(st.hostel) + ' days are ' + esc(dayNames(st.hostel)) + '. You can build your cart any time.</div>';
+  return page({
+    title:'Woosh!', rules:true, logo:true,
+    right: syncChip() + '<button class="icon-btn avatar" data-act="profile" aria-label="Profile">' + esc(initial(st.name)) + '</button>',
+    body:'<div class="hello">Hi, ' + esc(first) + '</div><div class="hello-sub">' + esc(place) + '</div>' +
+      '<div class="daycard"><div class="dc-ic">' + I.calendar + '</div><div>' + day + '</div></div>' +
+      '<div class="tiles">' +
+      tile('s-laundry', I.washer, 'Laundry') +
+      tile('s-announcements', I.megaphone, 'Announcements', n) +
+      tile('s-lostfound', I.search, 'Lost & Found') +
+      tile('s-report', I.alert, 'Report Issues to Laundry') +
+      '</div>'
+  });
+};
+
+S['s-history'] = () => {
+  const st = me(), cutoff = Date.now() - MONTH;
+  const rows = db.bags.filter(b => b.sid === st.sid && b.ts >= cutoff).map(b => ({ts:b.ts, type:'Regular', icon:I.washer, items:b.items, status:b.status}))
+    .concat(db.extras.filter(x => x.sid === st.sid && x.ts >= cutoff).map(x => ({ts:x.ts, type:'Extra Services', icon:I.sparkles, items:x.items, status:x.status, total:x.total, method:x.method})))
+    .sort((a,b) => b.ts - a.ts);
+  const body = rows.length ? rows.map(r =>
+    '<div class="card"><div class="card-row"><div class="ann-ic">' + r.icon + '</div><div class="grow">' +
+      '<div class="row-sb"><span class="t">' + r.type + '</span><span class="state">' + (r.status === 'done' ? I.check + '<span>Done</span>' : '<span>Submitted</span>') + '</span></div>' +
+      '<div class="s">' + esc(itemsText(r.items)) + (r.total ? '<br>₹' + r.total + ' · ' + esc(r.method) : '') + '</div>' +
+      '<div class="d">' + fmtDT(r.ts) + '</div></div></div></div>'
+  ).join('') : '<div class="empty">No submissions in the last month.</div>';
+  return page({title:'Laundry History', back:true, body, rules:true});
+};
+
+S['s-laundry'] = () => {
+  const st = me();
+  return page({
+    title:'Laundry', back:true, rules:true,
+    body:'<div class="btn-list">' +
+      listBtn('data-act="go" data-to="s-regular"', I.washer, 'Regular', '', laundryDayToday(st) ? 'Free. ' + windowNote() : 'Free. Submit on ' + dayNames(st.hostel)) +
+      listBtn('data-act="go" data-to="s-extra"', I.sparkles, 'Extra Services', '', 'Paid. Blankets, jackets, shoes and more') + '</div>'
+  });
+};
+
+/* Regular is always open: the cart can be built any day and is saved on this
+   device. Only Submit checks the hostel's laundry day (see submitProblem). */
+function windowNote(){
+  const h = new Date().getHours();
+  return h < 16 ? 'Opens at 4 PM today' : (h < 20 ? 'Open now until 8 PM' : 'Closed for today at 8 PM');
+}
+S['s-regular'] = () => {
+  const st = me();
+  loadCart();
+  if(!bedsheetDay() && ui.regular.bedsheets){ delete ui.regular.bedsheets; saveCart(); }
+  let note = '';
+  if(laundryDayToday(st) && !inSubmitWindow()){
+    const nd = nextLaundryDay(st);
+    note = '<div class="notice">' + I.calendar + '<span>' + (new Date().getHours() < 16
+      ? 'Today is your laundry day. Submissions open at <b>4 PM</b>. You can build your cart now.'
+      : 'Submissions for today closed at <b>8 PM</b>. Your cart is saved' + (nd ? ' for <b>' + esc(fmtNext(nd)) + '</b>' : '') + '.') + '</span></div>';
+  }
+  if(!laundryDayToday(st)){
+    const nd = nextLaundryDay(st);
+    note = '<div class="notice">' + I.calendar + '<span>' + "Today isn't " + esc(st.hostel) + "'s laundry day. You can build your cart now and submit it on <b>" +
+      esc(dayNames(st.hostel)) + '</b>' + (nd ? ' (next: <b>' + esc(fmtNext(nd)) + '</b>)' : '') + '.' +
+      (bedsheetDay() ? ' Bedsheets alone can be submitted today (1st/15th rule).' : '') + '</span></div>';
+  }
+  return page({
+    title:'Regular', back:true, rules:true,
+    body: note + REGULAR.map(it => itemRow('regular', it)).join(''),
+    actions:'<button class="btn btn-accent" data-act="regular-submit"' + (regularTotal() && !ui.busy ? '' : ' disabled') + '>' + I.send + '<span>' + (ui.busy ? 'Submitting…' : 'Submit') + '</span></button>'
+  });
+};
+
+S['s-extra'] = () => {
+  const tot = extraTotal();
+  return page({
+    title:'Extra Services', back:true, rules:true,
+    body: EXTRA.map(it => itemRow('extra', it)).join(''),
+    actions:'<span class="total">Total: ₹' + tot + '</span><button class="btn btn-accent" data-act="go" data-to="s-pay"' + (tot ? '' : ' disabled') + '><span>Proceed to Pay</span>' + I.arrowR + '</button>'
+  });
+};
+
+S['s-pay'] = () => {
+  const lines = EXTRA.filter(it => (ui.extra[it.k] || {}).qty).map(it => {
+    const q = ui.extra[it.k].qty;
+    return '<div class="line"><span>' + esc(it.n) + ' × ' + q + '</span><span>₹' + (q * it.p) + '</span></div>';
+  }).join('');
+  return page({
+    title:'Payment', back:true, rules:true,
+    body:'<div class="summary">' + lines + '<div class="line total"><span>Total</span><span>₹' + extraTotal() + '</span></div></div>' +
+      '<div class="btn-list">' +
+      listBtn('data-act="pay-cash"', I.cash, 'Cash', '', 'Pay at the laundry counter') +
+      listBtn('data-act="go" data-to="s-upi"', I.phone, 'UPI', '', 'Pay with a UPI ID') +
+      listBtn('data-act="go" data-to="s-card"', I.card, 'Card', '', 'Debit or credit card') + '</div>'
+  });
+};
+
+S['s-upi'] = () => page({
+  title:'UPI', back:true, rules:true,
+  body:'<div class="summary"><div class="line total"><span>Amount</span><span>₹' + extraTotal() + '</span></div></div>' +
+    input('UPI ID','upi','text','name@bank','autocomplete="off" autocapitalize="off"'),
+  actions:'<button class="btn btn-accent" data-act="upi-submit">' + I.send + '<span>Submit</span></button>'
+});
+
+S['s-card'] = () => page({
+  title:'Card', back:true, rules:true,
+  body:'<div class="summary"><div class="line total"><span>Amount</span><span>₹' + extraTotal() + '</span></div></div>' +
+    input('Card Number','cardNo','text','1234 5678 9012 3456','inputmode="numeric" maxlength="19" autocomplete="off"') +
+    '<div class="two">' + input('Expiry','cardExp','text','MM/YY','inputmode="numeric" maxlength="5" autocomplete="off"') +
+      input('CVV','cardCvv','password','123','inputmode="numeric" maxlength="4" autocomplete="off"') + '</div>',
+  actions:'<button class="btn btn-accent" data-act="card-submit">' + I.send + '<span>Submit</span></button>'
+});
+
+S['s-announcements'] = () => {
+  const f = feedFor(me());
+  const body = f.length ? f.map(a => {
+    let extra = '';
+    if(a.type === 'lf'){
+      const lf = db.lostFound.find(x => x.id === a.ref);
+      if(lf) extra = photoStrip(lf.photos) + lfFoundBlock(lf, false);
+    } else if(a.type === 'issue'){
+      const is = db.issues.find(x => x.id === a.ref);
+      if(is && is.photo) extra = photoStrip([is.photo]);
+    }
+    return '<div class="card"><div class="card-row"><div class="ann-ic">' + (TYPE_IC[a.type] || I.bell) + '</div><div class="grow">' +
+      '<div class="t">' + esc(a.title) + '</div>' + (a.body ? '<div class="s">' + esc(a.body) + '</div>' : '') +
+      '<div class="d">' + fmtDT(a.ts) + '</div></div></div>' + extra + '</div>';
+  }).join('') : '<div class="empty">No announcements yet.</div>';
+  return page({title:'Announcements', back:true, body, rules:true});
+};
+
+S['s-lostfound'] = () => {
+  const p = ui.lf.photos;
+  const body =
+    '<div class="field"><label>Photos (max 3)</label><div class="photo-row">' +
+      p.map((src,i) => thumb(src, {kind:'lf', i})).join('') +
+      (p.length < 3 ? '<button class="cam lg" data-act="cam" data-kind="lf" aria-label="Add a photo">' + I.camera + '<span>Add photo</span></button>' : '') +
+    '</div></div>' +
+    '<div class="field"><label for="f-lfdesc">Description</label><textarea class="input" id="f-lfdesc" data-bind="lfdesc" placeholder="Describe the item">' + esc(ui.lf.desc) + '</textarea></div>';
+  return page({title:'Lost & Found', back:true, body, rules:true, actions:'<button class="btn btn-accent" data-act="lf-submit">' + I.send + '<span>Submit</span></button>'});
+};
+
+S['s-report'] = () => {
+  const is = ui.issue;
+  const dd = '<div class="field"><label>Issue</label><div class="item">' +
+    '<button class="item-head" data-act="issue-dd" aria-expanded="' + is.dd + '"><span class="nm">' + (is.cats.length ? esc(is.cats.join(', ')) : 'Select issue') + '</span><span class="rt">' + (is.dd ? I.up : I.down) + '</span></button>' +
+    (is.dd ? '<div class="item-body">' + ISSUES.map(c =>
+      '<label class="opt"><input type="checkbox" class="chk" data-issue="' + c + '"' + (is.cats.includes(c) ? ' checked' : '') + '><span>' + c + '</span></label>').join('') + '</div>' : '') +
+    '</div></div>';
+  const other = is.cats.includes('Others')
+    ? '<div class="field"><label for="f-issueOther">Others</label><input class="input" id="f-issueOther" data-bind="issueOther" type="text" placeholder="Describe the issue" value="' + esc(is.other) + '"></div>' : '';
+  const photo = '<div class="field"><label>Photo</label><div class="photo-row">' +
+    (is.photo ? thumb(is.photo, {kind:'issue'}) : '<button class="cam lg" data-act="cam" data-kind="issue" aria-label="Add a photo">' + I.camera + '<span>Add photo</span></button>') + '</div></div>';
+  return page({title:'Report Issues to Laundry', back:true, rules:true, body:dd + other + photo, actions:'<button class="btn btn-accent" data-act="issue-submit">' + I.send + '<span>Submit</span></button>'});
+};
+
+/* ---------- staff ---------- */
+S['t-lang'] = () => page({
+  title:'Language · भाषा · ભાષા', back:true,
+  body:'<div class="btn-list">' +
+    listBtn('data-act="lang" data-v="en"', I.globe, 'English') +
+    listBtn('data-act="lang" data-v="hi"', I.globe, 'हिन्दी') +
+    listBtn('data-act="lang" data-v="gu"', I.globe, 'ગુજરાતી') + '</div>'
+});
+
+S['t-login'] = () => page({
+  title:t('staffLogin'), back:true,
+  body: input(t('staffName'),'sname','text',t('namePh'),'autocomplete="name"') + input(t('staffId'),'stid','text',t('idPh'),'autocomplete="off"'),
+  actions:'<button class="btn btn-accent" data-act="staff-submit">' + I.send + '<span>' + esc(t('submit')) + '</span></button>'
+});
+
+function activeHostels(d){ return HOSTELS.filter(h => (LAUNDRY_DAYS[h] || []).includes(d.getDay())); }
+function sameDay(ts, d){ const x = new Date(ts); return x.getFullYear() === d.getFullYear() && x.getMonth() === d.getMonth() && x.getDate() === d.getDate(); }
+function ordinal(n){ const s = ['th','st','nd','rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+function floorLabel(n){ return lang() === 'en' ? ordinal(n) + ' Floor' : t('floor', {n}); }
+/* Counts only the ACTIVE queue: today's submissions from today's hostels
+   that staff have not yet marked Done. Marking Done lowers the numbers. */
+function summaryCard(){
+  const now = new Date(), loc = LOCALE[lang()], hs = activeHostels(now);
+  const floors = {}, perHostel = {}; let reg = 0, ext = 0;
+  hs.forEach(h => { perHostel[h] = 0; });
+  const add = (rec, key) => {
+    if(rec.status === 'done' || !hs.includes(rec.hostel) || !sameDay(rec.ts, now)) return;
+    const f = Math.floor(+rec.room / 100);
+    floors[f] = floors[f] || {r:0, e:0};
+    floors[f][key]++;
+    perHostel[rec.hostel]++;
+    if(key === 'r') reg++; else ext++;
+  };
+  db.bags.forEach(b => add(b, 'r'));
+  db.extras.forEach(x => add(x, 'e'));
+  const dayStr = now.toLocaleDateString(loc, {weekday:'long'});
+  const dateStr = now.toLocaleDateString(loc, {day:'numeric', month:'short'});
+  let h = '<section class="sc" aria-label="' + esc(t('summaryTitle')) + '">' +
+    '<div class="sc-top"><div class="sc-head">' + I.calendar + '<span>' + esc(t('summaryTitle')) + '</span></div><span class="sc-tag">' + esc(t('pendingBags')) + '</span></div>' +
+    '<div class="sc-row"><span class="sc-k">' + esc(t('day')) + '</span><span class="sc-v">' + esc(dayStr) + '<span class="sc-sub">' + esc(dateStr) + '</span></span></div>' +
+    '<div class="sc-row"><span class="sc-k">' + esc(t('hostel')) + '</span>' +
+      (hs.length ? '<div class="chips">' + hs.map(x => '<span class="chip">' + esc(trMap(HOSTEL_T, x)) + ' <b>' + perHostel[x] + '</b></span>').join('') + '</div>'
+                 : '<span class="sc-muted">' + esc(t('noLaundryToday')) + '</span>') + '</div>';
+  if(hs.length){
+    h += '<div class="sc-stats">' +
+      '<div class="stat reg"><div class="n">' + reg + '</div><div class="l">' + esc(t('regular')) + '</div></div>' +
+      '<div class="stat ext"><div class="n">' + ext + '</div><div class="l">' + esc(t('extra')) + '</div></div>' +
+      '<div class="stat tot"><div class="n">' + (reg + ext) + '</div><div class="l">' + esc(t('totalLbl')) + '</div></div></div>';
+    const keys = Object.keys(floors).map(Number).sort((a,b) => a - b);
+    h += '<div class="sc-scroll">' + (keys.length
+      ? '<table class="sc-table"><thead><tr><th scope="col">' + esc(t('floorCol')) + '</th><th scope="col" class="c-reg">' + esc(t('regular')) + '</th><th scope="col" class="c-ext">' + esc(t('extra')) + '</th></tr></thead><tbody>' +
+        keys.map(f => '<tr><th scope="row">' + esc(floorLabel(f)) + '</th><td class="c-reg">' + floors[f].r + '</td><td class="c-ext">' + floors[f].e + '</td></tr>').join('') +
+        '</tbody></table>'
+      : '<div class="sc-muted sc-empty">' + esc(t('noSubsToday')) + '</div>') + '</div>';
+  }
+  return h + '</section>';
+}
+S['t-landing'] = () => {
+  const sf = staffMe();
+  return page({
+    title:'Woosh!', fit:true, logo:true,
+    right: syncChip() + '<button class="icon-btn avatar" data-act="profile" aria-label="Profile">' + esc(initial(sf.name)) + '</button>',
+    body: summaryCard() + '<div class="tiles five">' +
+      tile('t-hostels', I.building, t('hostel'), 0, 'hostel') +
+      tile('t-lostfound', I.search, t('lostFound'), 0, 'lf') +
+      tile('t-complaints', I.clipboard, t('complaints'), 0, 'complaints') +
+      tile('t-announcements', I.megaphone, t('announcements'), 0, 'ann') +
+      tile('t-extras', I.sparkles, t('extraServices'), 0, 'extra') + '</div>'
+  });
+};
+
+S['t-hostels'] = () => page({
+  title:t('hostel'), back:true,
+  body:'<div class="btn-list">' + HOSTELS.map(h => listBtn('data-act="hostel" data-v="' + h + '"', I.building, trMap(HOSTEL_T, h))).join('') + '</div>'
+});
+
+S['t-wings'] = () => page({
+  title:ui.params.hostel, back:true,
+  body:'<div class="btn-list">' + WINGS.map(w => listBtn('data-act="wing" data-v="' + w + '"', I.grid, t('wing',{w}))).join('') + '</div>'
+});
+
+function floorsFor(hostel){ return hostel === 'SH-1' ? FLOORS_SH1 : FLOORS_DEFAULT; }
+function placeTitle(p){ return trMap(HOSTEL_T, p.hostel) + (p.wing ? ' · ' + t('wing',{w:p.wing}) : ''); }
+S['t-floors'] = () => page({
+  title:placeTitle(ui.params), back:true,
+  body:'<div class="btn-list">' + floorsFor(ui.params.hostel).map(f => listBtn('data-act="floor" data-v="' + f + '"', I.layers, t('floor',{n:f}))).join('') + '</div>'
+});
+
+function inPlace(b, p){
+  return b.hostel === p.hostel && (p.hostel !== 'SH-1' || b.wing === p.wing);
+}
+function pendingGroups(p){
+  const m = {};
+  db.bags.forEach(b => {
+    if(b.status !== 'pending' || !inPlace(b, p) || Math.floor(+b.room / 100) !== p.floor) return;
+    const k = b.sid + '|' + b.room + '|' + b.side;
+    if(!m[k]) m[k] = {sid:b.sid, room:b.room, side:b.side};
+  });
+  return Object.values(m).sort((a,b) => +a.room - +b.room);
+}
+S['t-floor'] = () => {
+  const p = ui.params, groups = pendingGroups(p);
+  const col = side => {
+    const g = groups.filter(x => x.side === side);
+    return '<div class="col"><div class="col-h">' + side + '</div>' +
+      (g.length ? g.map(x => '<button class="btn btn-outline" data-act="room" data-sid="' + esc(x.sid) + '" data-room="' + esc(x.room) + '" data-side="' + side + '">' + I.door + '<span>' + esc(x.room) + ' ' + side + '</span></button>').join('')
+                : '<div class="empty sm">' + esc(t('noBags')) + '</div>') + '</div>';
+  };
+  return page({title:placeTitle(p) + ' · ' + t('floor',{n:p.floor}), back:true, body:'<div class="cols">' + col('X') + col('Y') + '</div>'});
+};
+
+function cartBags(){
+  const p = ui.params;
+  return db.bags.filter(b => b.status === 'pending' && b.sid === p.sid && inPlace(b, p) && b.room === p.room && b.side === p.side);
+}
+S['t-cart'] = () => {
+  const p = ui.params, bags = cartBags();
+  const name = bags[0] ? bags[0].name : ((db.students[p.sid] || {}).name || '');
+  const info = '<div class="card"><div class="card-row"><div class="ann-ic">' + I.user + '</div><div class="grow"><div class="t">' + esc(name) + '</div><div class="s">' +
+    esc(t('studentId',{id:p.sid})) + '<br>' + esc(roomLabelStaff(p)) + '</div></div></div></div>';
+  const list = bags.map(b => '<div class="card"><div class="d top">' + fmtDT(b.ts, true) + '</div>' +
+    b.items.map(i => '<div class="line"><span>' + esc(itemName(i)) + '</span><span>× ' + i.qty + '</span></div>' + (i.photo ? photoStrip([i.photo]) : '')).join('') + '</div>').join('');
+  return page({title:p.room + ' ' + p.side, back:true, body:info + list, actions:'<button class="btn btn-accent" data-act="cart-done"' + (bags.length ? '' : ' disabled') + '>' + I.check + '<span>' + esc(t('done')) + '</span></button>'});
+};
+
+function staffLfCard(x){
+  return '<div class="card"><div class="card-row"><div class="ann-ic">' + I.search + '</div><div class="grow">' +
+    '<div class="t">' + esc(x.name) + '</div><div class="s">' + esc(roomLabelStaff(x)) + '</div><div class="s">' + esc(x.desc) + '</div>' +
+    '<div class="d">' + fmtDT(x.ts, true) + '</div></div></div>' + photoStrip(x.photos) + lfFoundBlock(x, true) + '</div>';
+}
+S['t-lostfound'] = () => {
+  const list = db.lostFound.slice().sort((a,b) => b.ts - a.ts);
+  return page({title:t('lostFound'), back:true, body: list.length ? list.map(staffLfCard).join('') : '<div class="empty">' + esc(t('noPosts')) + '</div>'});
+};
+
+S['t-complaints'] = () => {
+  const tab = ui.ctab;
+  const list = db.issues.filter(i => i.status === tab).sort((a,b) => b.ts - a.ts);
+  const tabs = '<div class="tabs">' + ['received','resolved','unresolved'].map(k =>
+    '<button class="btn ' + (tab === k ? 'btn-accent' : 'btn-outline') + '" data-act="ctab" data-v="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div>';
+  const card = i => {
+    let act = '';
+    if(tab === 'received'){
+      act = '<div class="card-actions"><label class="chk-inline"><input type="checkbox" class="chk" data-resolve="' + esc(i.id) + '"><span>' + esc(t('resolved')) + '</span></label>' +
+        '<button class="btn btn-outline btn-sm" data-act="unresolve" data-id="' + esc(i.id) + '">' + I.xcircle + '<span>' + esc(t('unresolved')) + '</span></button></div>';
+    } else if(tab === 'resolved'){
+      act = '<div class="card-actions"><span class="state">' + I.check + '<span>' + esc(t('resolved')) + '</span></span></div>';
+    } else {
+      act = '<div class="card-actions"><span class="state bad">' + I.xcircle + '<span>' + esc(t('unresolved')) + '</span></span>' +
+        '<label class="chk-inline"><input type="checkbox" class="chk" data-resolve="' + esc(i.id) + '"><span>' + esc(t('resolved')) + '</span></label></div>';
+    }
+    return '<div class="card"><div class="card-row"><div class="ann-ic">' + I.alert + '</div><div class="grow">' +
+      '<div class="t">' + esc(issueTextStaff(i)) + '</div><div class="s">' + esc(i.name) + ' · ' + esc(roomLabelStaff(i)) + '</div>' +
+      '<div class="d">' + fmtDT(i.ts, true) + '</div></div></div>' + (i.photo ? photoStrip([i.photo]) : '') + act + '</div>';
+  };
+  const empty = {received:'noReceived', resolved:'noResolved', unresolved:'noUnresolved'}[tab];
+  return page({title:t('complaints'), back:true, body:tabs + (list.length ? list.map(card).join('') : '<div class="empty">' + esc(t(empty)) + '</div>')});
+};
+
+S['t-announcements'] = () => {
+  const rows = db.closures.map(c => ({ts:c.ts, kind:'closure', c})).concat(db.lostFound.map(x => ({ts:x.ts, kind:'lf', x}))).sort((a,b) => b.ts - a.ts);
+  const body = rows.length ? rows.map(r => r.kind === 'closure'
+    ? '<div class="card"><div class="card-row"><div class="ann-ic">' + I.calendar + '</div><div class="grow"><div class="t">' + esc(t('laundryClosed')) + '</div>' +
+      '<div class="s">' + esc(t('closedRange',{a:fmtDay(r.c.from, true), b:fmtDay(r.c.to, true)})) + '</div><div class="d">' + fmtDT(r.c.ts, true) + '</div></div></div></div>'
+    : staffLfCard(r.x)
+  ).join('') : '<div class="empty">' + esc(t('noAnnouncements')) + '</div>';
+  return page({title:t('announcements'), back:true, right:'<button class="icon-btn" data-act="add-closure" aria-label="Add">' + I.plus + '</button>', body});
+};
+
+S['t-extras'] = () => {
+  const tab = ui.xtab;
+  const list = db.extras.filter(x => tab === 'pending' ? x.status !== 'done' : x.status === 'done')
+    .sort((a,b) => (tab === 'pending' ? b.ts - a.ts : (b.doneTs || b.ts) - (a.doneTs || a.ts)));
+  const tabs = '<div class="tabs">' + ['pending','completed'].map(k =>
+    '<button class="btn ' + (tab === k ? 'btn-accent' : 'btn-outline') + '" data-act="xtab" data-v="' + k + '">' + esc(t(k)) + '</button>').join('') + '</div>';
+  const card = x => '<div class="card"><div class="card-row"><div class="ann-ic">' + I.sparkles + '</div><div class="grow">' +
+    '<div class="t">' + esc(x.name) + '</div><div class="s">' + esc(roomLabelStaff(x)) + '</div>' +
+    '<div class="s">' + esc(itemsTextStaff(x.items)) + '</div>' +
+    '<div class="s">' + esc(t('total',{t:x.total})) + ' · ' + esc(t('payment',{m:trMap(PAY_T, x.method)})) + '</div>' +
+    '<div class="d">' + fmtDT(x.ts, true) + '</div></div></div>' + photoStrip(x.items.filter(i => i.photo).map(i => i.photo)) +
+    '<div class="card-actions">' + (tab === 'pending'
+      ? '<label class="chk-inline"><input type="checkbox" class="chk" data-extradone="' + esc(x.id) + '"><span>' + esc(t('done')) + '</span></label>'
+      : '<span class="state">' + I.check + '<span>' + esc(t('completedOn',{d:fmtDT(x.doneTs || x.ts, true)})) + '</span></span>') +
+    '</div></div>';
+  return page({title:t('extraServices'), back:true, body:tabs + (list.length ? list.map(card).join('') : '<div class="empty">' + esc(t(tab === 'pending' ? 'noPending' : 'noCompleted')) + '</div>')});
+};
+
+/* ================= navigation ================= */
+const BACK = {
+  's-onboard':'entry', 's-history':'s-landing', 's-laundry':'s-landing', 's-regular':'s-laundry', 's-extra':'s-laundry',
+  's-pay':'s-extra', 's-upi':'s-pay', 's-card':'s-pay', 's-announcements':'s-landing', 's-lostfound':'s-landing', 's-report':'s-landing',
+  't-lang':'entry', 't-login':'t-lang', 't-hostels':'t-landing', 't-lostfound':'t-landing', 't-complaints':'t-landing',
+  't-announcements':'t-landing', 't-extras':'t-landing'
+};
+function goBack(){
+  const p = ui.params;
+  if(ui.screen === 't-wings') return nav('t-hostels');
+  if(ui.screen === 't-floors') return p.wing ? nav('t-wings', {hostel:p.hostel}) : nav('t-hostels');
+  if(ui.screen === 't-floor') return nav('t-floors', {hostel:p.hostel, wing:p.wing});
+  if(ui.screen === 't-cart') return nav('t-floor', {hostel:p.hostel, wing:p.wing, floor:p.floor});
+  nav(BACK[ui.screen] || 'entry');
+}
+function nav(screen, params){
+  clearTimeout(toastTimer);
+  document.getElementById('toast').innerHTML = '';
+  ui.screen = screen;
+  ui.params = params || {};
+  if(['s-pay','s-upi','s-card'].includes(screen) && !extraTotal()) ui.screen = 's-extra';
+  if(screen === 's-announcements'){
+    const st = me();
+    if(st){ const fresh = feedFor(st).filter(a => !st.readIds.includes(a.id)); if(fresh.length){ fresh.forEach(a => st.readIds.push(a.id)); put('students', st); } }
+  }
+  render();
+}
+const root = document.getElementById('screen-root');
+const app = document.getElementById('app');
+function render(){
+  if(ui.screen.startsWith('s-') && ui.screen !== 's-onboard' && !me()) ui.screen = 'entry';
+  if(ui.screen.startsWith('t-') && !['t-lang','t-login'].includes(ui.screen) && !staffMe()) ui.screen = 'entry';
+  const role = isStaffScreen() ? 'staff' : 'student';
+  app.dataset.role = role;
+  app.dataset.screen = ui.screen === 'entry' ? 'entry' : 'app';
+  document.documentElement.dataset.role = role;
+  document.documentElement.lang = role === 'staff' ? lang() : 'en';
+  document.getElementById('theme-color').setAttribute('content', role === 'staff' ? '#134e4a' : '#0d3862');
+  const html = S[ui.screen]();
+  if(html === ui.lastHtml && ui.last === ui.screen && root.firstChild){ afterRender(); return; }   // nothing visible changed
+  const prev = root.querySelector('.content');
+  const keep = ui.last === ui.screen && prev ? prev.scrollTop : 0;
+  root.innerHTML = html;
+  ui.lastHtml = html;
+  hydratePhotos(root);
+  const c = root.querySelector('.content');
+  if(c) c.scrollTop = keep;
+  ui.last = ui.screen;
+  afterRender();
+}
+function afterRender(){
+  if(ui.screen !== 's-landing' || ui.modal) return;
+  const st = me();
+  const pend = feedFor(st).filter(a => a.type === 'closure' && !st.popped.includes(a.id));
+  if(!pend.length) return;
+  pend.forEach(a => st.popped.push(a.id));
+  put('students', st);
+  showModal({title:pend[0].title, body:'<p>' + esc(pend[0].body) + '</p>', buttons:[{label:'OK', kind:'accent'}]});
+}
+
+/* ================= actions ================= */
+function setBind(key, val){
+  if(key === 'lfdesc') ui.lf.desc = val;
+  else if(key === 'issueOther') ui.issue.other = val;
+  else ui.form[key] = val;
+}
+function field(k){ return String(ui.form[k] || '').trim(); }
+
+function onboardSubmit(){
+  const name = field('name'), sid = field('sid'), hostel = ui.form.hostel || '', room = field('room'),
+        side = ui.form.side || '', batch = field('batch'), email = field('email');
+  const wing = hostel === 'SH-1' ? (ui.form.wing || '') : '';
+  if(!name || !sid || !hostel || !room || !side || !batch || !email || (hostel === 'SH-1' && !wing)){ toast('Fill in all fields.'); return; }
+  if(hostel === 'SH-1' && !/^[1-4]\d{2}$/.test(room)){ toast('Enter a room number from floor 1 to 4 (e.g. 101).'); return; }
+  if(hostel !== 'SH-1' && !/^[2-8]\d{2}$/.test(room)){ toast('Enter a room number from floor 2 to 8 (e.g. 201).'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid college email.'); return; }
+  if(db.students[sid]){ ui.authMode = 'login'; render(); toast('This Student ID already has an account. Use Log In.'); return; }
+  put('students', {name, sid, hostel, wing, room, side, batch, email, readIds:[], popped:[], ts:Date.now()});
+  db.session = {role:'student', id:sid};
+  saveSession(); resetDrafts(); nav('s-landing');
+}
+function studentLogin(){
+  const sid = field('sid'), email = field('email');
+  if(!sid || !email){ toast('Fill in all fields.'); return; }
+  const st = db.students[sid];
+  if(!st || String(st.email).toLowerCase() !== email.toLowerCase()){ toast('No account matches this Student ID and email.'); return; }
+  db.session = {role:'student', id:sid};
+  saveSession(); resetDrafts(); nav('s-landing');
+}
+function staffSubmit(){
+  const name = field('sname'), id = field('stid');
+  if(!name || !id){ toast(t('fillAll')); return; }
+  const ex = db.staff[id];
+  if(ex && String(ex.name).trim().toLowerCase() !== name.toLowerCase()){ toast(t('idTaken')); return; }
+  const rec = Object.assign({}, ex || {}, {name: ex ? ex.name : name, id, lang:ui.lang});
+  if(!ex || ex.lang !== ui.lang) put('staff', rec); else db.staff[id] = rec;
+  db.session = {role:'staff', id};
+  saveSession(); resetDrafts(); nav('t-landing');
+}
+
+function openProfile(){
+  if(db.session && db.session.role === 'student'){
+    const st = me();
+    const rows = [['Name', st.name], ['Student ID', st.sid], ['Hostel', st.hostel]]
+      .concat(st.wing ? [['Wing', st.wing + ' Wing']] : [])
+      .concat([['Room Number', st.room + ' ' + st.side], ['Batch', st.batch], ['College Email', st.email]]);
+    showModal({dismissible:true, sheet:true, body:
+      '<div class="msec"><div class="msec-h">' + I.user + '<span>Profile</span></div><dl class="kv">' +
+        rows.map(r => '<dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd>').join('') + '</dl></div>' +
+      '<div class="msec"><div class="msec-h">' + I.history + '<span>View</span></div><button class="btn btn-soft" data-act="view-history">' + I.washer + '<span>Laundry History</span></button></div>' +
+      '<div class="msec"><div class="msec-h">' + I.logout + '<span>Logout</span></div><button class="btn btn-soft" data-act="logout-ask">' + I.logout + '<span>Logout</span></button></div>'
+    });
+  } else {
+    showModal({dismissible:true, sheet:true, column:true, buttons:[{label:t('logout'), kind:'soft', icon:I.logout, fn:() => { askLogout(); }}]});
+  }
+}
+function askLogout(){
+  const staff = isStaffScreen();
+  showModal({title: staff ? t('logoutConfirm') : 'Are you sure you want to log out?',
+    buttons:[{label: staff ? t('cancel') : 'Cancel', kind:'soft'}, {label: staff ? t('ok') : 'OK', kind:'accent', fn:logout}]});
+}
+function logout(){ db.session = null; saveSession(); resetDrafts(); ui.lang = 'en'; nav('entry'); }
+function showRules(){
+  showModal({title:'Laundry Rules', dismissible:true, sheet:true,
+    body:'<ol class="rules-list">' + RULES.map(r => '<li>' + esc(r) + '</li>').join('') + '</ol>',
+    buttons:[{label:'Close', kind:'accent'}]});
+}
+
+let tipTimer = null;
+function toggleItem(kind, k){
+  const key = kind + ':' + k;
+  if(kind === 'regular' && k === 'bedsheets' && !bedsheetDay()){
+    ui.tip = ui.tip === key ? null : key;
+    clearTimeout(tipTimer);
+    if(ui.tip) tipTimer = setTimeout(() => { if(ui.tip === key){ ui.tip = null; render(); } }, 5000);
+    render();
+    return;
+  }
+  ui.open[key] = !ui.open[key];
+  render();
+}
+function step(kind, k, d){
+  if(kind === 'regular' && k === 'bedsheets' && !bedsheetDay()) return;
+  const cart = cartOf(kind);
+  cart[k] = cart[k] || {qty:0, photo:null};
+  if(kind === 'regular' && d > 0 && regularTotal() >= MAX_REGULAR){ toast('You can add only upto 8 items.'); return; }
+  cart[k].qty = Math.max(0, cart[k].qty + d);
+  if(kind === 'regular') saveCart();
+  render();
+}
+function snapshot(st){ return {sid:st.sid, name:st.name, hostel:st.hostel, wing:st.wing || '', room:st.room, side:st.side}; }
+
+function regularSubmit(){
+  const st = me();
+  const items = REGULAR.filter(it => (ui.regular[it.k] || {}).qty > 0)
+    .map(it => ({k:it.k, n:it.n, qty:ui.regular[it.k].qty, photo:ui.regular[it.k].photo || null}));
+  if(!items.length) return;
+  const problem = submitProblem(items, st);
+  if(problem){ showModal({title:problem.title, body: problem.body ? '<p>' + esc(problem.body) + '</p>' : '', buttons:[{label:'OK', kind:'accent'}]}); return; }
+  if(!put('bags', Object.assign({id:uid(), items, ts:Date.now(), status:'pending'}, snapshot(st)))) return;
+  try{ if(navigator.vibrate) navigator.vibrate(60); }catch(e){}
+  ui.regular = {}; ui.open = {}; saveCart();
+  nav('s-landing');
+  const n = items.reduce((s,i) => s + i.qty, 0);
+  sysNotify('Laundry submitted', n + (n === 1 ? ' item' : ' items') + ' submitted. Drop your bag at the laundry.', I.washer);
+}
+function placeExtra(method){
+  const items = EXTRA.filter(it => (ui.extra[it.k] || {}).qty > 0)
+    .map(it => ({k:it.k, n:it.n, qty:ui.extra[it.k].qty, p:it.p, photo:ui.extra[it.k].photo || null}));
+  if(!items.length) return;
+  const st = me();
+  if(!put('extras', Object.assign({id:uid(), items, total:extraTotal(), method, ts:Date.now(), status:'pending'}, snapshot(st)))) return;
+  ui.extra = {}; ui.open = {}; ui.form = {};
+  nav('s-landing');
+  sysNotify('Order placed', 'Order placed, submit items at laundry', I.sparkles);
+}
+function upiSubmit(){
+  if(!/^[^\s@]+@[^\s@]+$/.test(field('upi'))){ toast('Enter a valid UPI ID.'); return; }
+  placeExtra('UPI');
+}
+function cardSubmit(){
+  const no = field('cardNo').replace(/\s/g,''), exp = field('cardExp'), cvv = field('cardCvv');
+  if(!/^\d{12,19}$/.test(no) || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(exp) || !/^\d{3,4}$/.test(cvv)){ toast('Enter valid card details.'); return; }
+  placeExtra('Card');
+}
+function lfSubmit(){
+  const desc = ui.lf.desc.trim();
+  if(!desc){ toast('Add a description.'); return; }
+  const st = me(), id = uid();
+  if(!put('lostFound', Object.assign({id, desc, photos:ui.lf.photos.slice(), ts:Date.now(), found:null}, snapshot(st)))) return;
+  const a = notify('all', 'lf', 'Lost & Found', desc, {ref:id});
+  st.readIds.push(a.id);
+  put('students', st);
+  ui.lf = {photos:[], desc:''};
+  nav('s-landing');
+  sysNotify('Lost & Found posted', 'Your post is now in Announcements.', I.search);
+}
+function toggleIssue(cat, on){
+  const cats = ui.issue.cats.filter(c => c !== cat);
+  if(on) cats.push(cat);
+  ui.issue.cats = ISSUES.filter(c => cats.includes(c));
+  render();
+}
+function issueSubmit(){
+  const is = ui.issue;
+  if(!is.cats.length){ toast('Select an issue.'); return; }
+  if(is.cats.includes('Others') && !is.other.trim()){ toast('Describe the issue under Others.'); return; }
+  const st = me(), id = uid();
+  const rec = Object.assign({id, cats:is.cats.slice(), other:is.cats.includes('Others') ? is.other.trim() : '', photo:is.photo, ts:Date.now(), status:'received'}, snapshot(st));
+  if(!put('issues', rec)) return;
+  const a = notify(st.sid, 'issue', 'Issue reported', issueText(rec), {ref:id});
+  st.readIds.push(a.id);
+  put('students', st);
+  ui.issue = {cats:[], other:'', photo:null, dd:false};
+  showModal({title:'Issue reported successfully', buttons:[{label:'OK', kind:'accent'}]});
+  nav('s-landing');
+  sysNotify('Issue reported', 'Your issue has been sent to the laundry.', I.alert);
+}
+function markFound(id){
+  const lf = db.lostFound.find(x => x.id === id);
+  if(!lf || lf.found) return;
+  const st = me(), sf = staffMe();
+  const by = st ? st.name : (sf ? sf.name : '');
+  const byStaff = !st;
+  lf.found = {by, byStaff, byId: st ? st.sid : (sf ? sf.id : ''), ts:Date.now()};
+  put('lostFound', lf);
+  if(byStaff || lf.sid !== st.sid){
+    notify(lf.sid, 'found', 'Your item was found', '"' + lf.desc + '" was found by ' + by + (byStaff ? ' (Staff)' : '') + '.');
+  }
+  render();
+}
+function cartDone(){
+  const p = ui.params, bags = cartBags();
+  if(!bags.length) return;
+  bags.forEach(b => { b.status = 'done'; b.doneTs = Date.now(); put('bags', b); });
+  notify(p.sid, 'done', 'Kapde ho gaye!', 'Your laundry is ready to collect.');
+  nav('t-floor', {hostel:p.hostel, wing:p.wing, floor:p.floor});
+}
+function resolveIssue(id){
+  const i = db.issues.find(x => x.id === id);
+  if(!i || i.status === 'resolved') return;
+  i.status = 'resolved'; i.closedTs = Date.now();
+  put('issues', i);
+  notify(i.sid, 'resolved', 'Issue resolved', 'Your reported issue (' + issueText(i) + ') has been resolved.');
+  render();
+}
+function unresolveIssue(id){
+  const i = db.issues.find(x => x.id === id);
+  if(!i || i.status !== 'received') return;
+  i.status = 'unresolved'; i.closedTs = Date.now();
+  put('issues', i);
+  notify(i.sid, 'unresolved', 'Issue could not be resolved', 'Sorry, the laundry could not resolve your reported issue (' + issueText(i) + ').');
+  render();
+}
+function markExtraDone(id){
+  const x = db.extras.find(e => e.id === id);
+  if(!x || x.status === 'done') return;
+  x.status = 'done'; x.doneTs = Date.now();
+  put('extras', x);
+  notify(x.sid, 'extra', 'Extra service done', itemsText(x.items) + ' ready to collect.');
+  render();
+}
+function openClosure(){
+  showModal({title:t('closureTitle'), dismissible:true,
+    body:'<div class="field"><label for="m-from">' + esc(t('fromDate')) + '</label><input class="input" type="date" id="m-from"></div>' +
+         '<div class="field"><label for="m-to">' + esc(t('toDate')) + '</label><input class="input" type="date" id="m-to"></div>',
+    buttons:[{label:t('cancel'), kind:'soft'}, {label:t('post'), kind:'accent', icon:I.send, fn:postClosure}]});
+}
+function postClosure(){
+  const from = document.getElementById('m-from').value, to = document.getElementById('m-to').value;
+  if(!from || !to){ toast(t('selectBoth')); return false; }
+  if(to < from){ toast(t('toAfterFrom')); return false; }
+  put('closures', {id:uid(), from, to, ts:Date.now()});
+  notify('all', 'closure', 'Laundry closed', 'Laundry will be closed from ' + fmtDay(from) + ' to ' + fmtDay(to) + '.');
+  render();
+}
+
+/* ================= camera ================= */
+const camInput = document.getElementById('cam-input');
+function openCam(kind, k){
+  if(kind === 'lf' && ui.lf.photos.length >= 3){ toast('You can add up to 3 photos.'); return; }
+  ui.cam = {kind, k};
+  camInput.value = '';
+  camInput.click();
+}
+function compress(file, cb){
+  const r = new FileReader();
+  r.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const s = Math.min(1, 480 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      cb(c.toDataURL('image/jpeg', 0.6));
+    };
+    img.onerror = () => cb(e.target.result);
+    img.src = e.target.result;
+  };
+  r.readAsDataURL(file);
+}
+function showPreview(){
+  showModal({body:'<img class="preview" src="' + ui.preview + '" alt="Captured photo">',
+    buttons:[{label:'Retake', kind:'soft', fn:() => { camInput.value = ''; camInput.click(); return false; }}, {label:'Ok', kind:'accent', fn:acceptPhoto}]});
+}
+camInput.addEventListener('change', () => {
+  const f = camInput.files && camInput.files[0];
+  if(!f || !ui.cam) return;
+  compress(f, url => { ui.preview = url; showPreview(); });
+});
+function acceptPhoto(){
+  const c = ui.cam, url = ui.preview;
+  if(!c || !url) return;
+  if(c.kind === 'regular' || c.kind === 'extra'){
+    const cart = cartOf(c.kind);
+    cart[c.k] = cart[c.k] || {qty:0, photo:null};
+    cart[c.k].photo = url;
+    if(c.kind === 'regular') saveCart();
+  } else if(c.kind === 'lf'){ if(ui.lf.photos.length < 3) ui.lf.photos.push(url); }
+  else if(c.kind === 'issue'){ ui.issue.photo = url; }
+  ui.cam = null; ui.preview = null;
+  render();
+}
+function removePhoto(kind, k, i){
+  if(kind === 'regular' || kind === 'extra'){ const c = cartOf(kind)[k]; if(c) c.photo = null; if(kind === 'regular') saveCart(); }
+  else if(kind === 'lf') ui.lf.photos.splice(i, 1);
+  else if(kind === 'issue') ui.issue.photo = null;
+  render();
+}
+
+/* ================= events ================= */
+app.addEventListener('click', e => {
+  const el = e.target.closest('[data-act]');
+  if(!el || el.disabled) return;
+  const d = el.dataset;
+  switch(d.act){
+    case 'back': goBack(); break;
+    case 'go': nav(d.to); break;
+    case 'role': resetDrafts(); ui.authMode = Object.keys(db.students).length ? 'login' : 'signup'; nav(d.v === 'student' ? 's-onboard' : 't-lang'); break;
+    case 'auth-mode': ui.authMode = d.v; render(); break;
+    case 'student-login': studentLogin(); break;
+    case 'side': ui.form.side = d.v; render(); break;
+    case 'wing-pick': ui.form.wing = d.v; render(); break;
+    case 'onboard-submit': onboardSubmit(); break;
+    case 'profile': openProfile(); break;
+    case 'view-history': closeModal(); nav('s-history'); break;
+    case 'logout-ask': askLogout(); break;
+    case 'rules': showRules(); break;
+    case 'toggle': toggleItem(d.kind, d.k); break;
+    case 'step': step(d.kind, d.k, +d.d); break;
+    case 'cam': openCam(d.kind, d.k); break;
+    case 'rm-photo': removePhoto(d.kind, d.k, +d.i); break;
+    case 'regular-submit': regularSubmit(); break;
+    case 'pay-cash': showModal({title:'Pay at laundry', buttons:[{label:'OK', kind:'accent', fn:() => placeExtra('Cash')}]}); break;
+    case 'upi-submit': upiSubmit(); break;
+    case 'card-submit': cardSubmit(); break;
+    case 'lf-submit': lfSubmit(); break;
+    case 'issue-dd': ui.issue.dd = !ui.issue.dd; render(); break;
+    case 'issue-submit': issueSubmit(); break;
+    case 'found': markFound(d.id); break;
+    case 'lang': ui.lang = d.v; nav('t-login'); break;
+    case 'staff-submit': staffSubmit(); break;
+    case 'hostel': d.v === 'SH-1' ? nav('t-wings', {hostel:d.v}) : nav('t-floors', {hostel:d.v}); break;
+    case 'wing': nav('t-floors', {hostel:ui.params.hostel, wing:d.v}); break;
+    case 'floor': nav('t-floor', {hostel:ui.params.hostel, wing:ui.params.wing, floor:+d.v}); break;
+    case 'room': nav('t-cart', {hostel:ui.params.hostel, wing:ui.params.wing, floor:ui.params.floor, sid:d.sid, room:d.room, side:d.side}); break;
+    case 'cart-done': cartDone(); break;
+    case 'ctab': ui.ctab = d.v; render(); break;
+    case 'xtab': ui.xtab = d.v; render(); break;
+    case 'unresolve': unresolveIssue(d.id); break;
+    case 'add-closure': openClosure(); break;
+    case 'sync-info': showSyncInfo(); break;
+    case 'zoom': openLightbox(el); break;
+    case 'lb-close': if(el.classList.contains('lb-x') || e.target === el) closeLightbox(); break;
+    case 'notif-close': clearTimeout(notifTimer); hideNotif(el); break;
+    case 'backdrop': if(e.target === el && ui.modal && ui.modal.dismissible) closeModal(); break;
+    case 'mbtn': modalBtn(+d.i); break;
+  }
+});
+app.addEventListener('input', e => {
+  const tg = e.target;
+  if(tg.dataset && tg.dataset.bind) setBind(tg.dataset.bind, tg.value);
+});
+app.addEventListener('change', e => {
+  const tg = e.target, d = tg.dataset || {};
+  if(d.bind){
+    setBind(d.bind, tg.value);
+    if(d.bind === 'hostel'){ if(tg.value !== 'SH-1') ui.form.wing = ''; render(); }
+  }
+  else if(d.issue) toggleIssue(d.issue, tg.checked);
+  else if(d.resolve) resolveIssue(d.resolve);
+  else if(d.extradone) markExtraDone(d.extradone);
+});
+
+/* ================= boot ================= */
+function updateClock(){
+  const d = new Date(), el = document.getElementById('sb-time');
+  if(el) el.textContent = (d.getHours() % 12 || 12) + ':' + String(d.getMinutes()).padStart(2,'0');
+}
+function renderLoading(){
+  ui.lastHtml = null;
+  root.innerHTML = '<div class="screen"><div class="entry"><div class="brand-mark" aria-hidden="true">' + logo(46, 'load') + '</div><h1 class="brand">Woosh!</h1><p class="brand-sub">Laundry app for Anant Student Residences</p><div class="loading">Connecting…</div></div></div>';
+}
+function startApp(){
+  if(Store.started) return;
+  Store.started = true;
+  if(me()) ui.screen = 's-landing';
+  else if(staffMe()) ui.screen = 't-landing';
+  else ui.screen = 'entry';
+  render();
+}
+window.addEventListener('storage', e => {
+  if(Store.mode !== 'local' || e.key !== KEY) return;
+  loadLocal();
+  if(Store.started && LIVE_SCREENS.includes(ui.screen) && !ui.modal) render();
+});
+let lastDay = new Date().toDateString();
+setInterval(() => {
+  updateClock();
+  const d = new Date().toDateString();
+  if(d !== lastDay){ lastDay = d; if(Store.started && !ui.modal) render(); }
+}, 30000);
+
+function fitDevice(){
+  const stage = document.querySelector('.stage'), dev = document.querySelector('.device');
+  if(!stage || !dev) return;
+  if(!window.matchMedia('(min-width: 481px)').matches){ dev.style.transform = ''; stage.style.width = ''; stage.style.height = ''; return; }
+  const W = dev.offsetWidth, H = dev.offsetHeight;
+  const sc = Math.min(1, (window.innerHeight - 32) / H, (window.innerWidth - 32) / W);
+  dev.style.transform = 'scale(' + sc + ')';
+  stage.style.width = Math.floor(W * sc) + 'px';
+  stage.style.height = Math.floor(H * sc) + 'px';
+}
+window.addEventListener('resize', fitDevice);
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  if(document.getElementById('lightbox').innerHTML) closeLightbox();
+  else if(ui.modal && ui.modal.dismissible) closeModal();
+});
+
+fitDevice();
+loadSession();
+updateClock();
+renderLoading();
+(function boot(){
+  const c = window.claude;
+  // Any normal host, or the file opened directly: sync through the public store.
+  if(!c || typeof c.use !== 'function'){ startPublic(); return; }
+  // Inside claude.ai: its links block outside servers, so use the platform's shared db.
+  let settled = false;
+  const giveUp = setTimeout(() => { if(!settled){ settled = true; goLocal('viewer'); } }, 11000);
+  Promise.resolve(c.use('db')).then(cdb => {
+    if(settled) return;
+    settled = true; clearTimeout(giveUp);
+    if(cdb) connectPlatform(cdb); else goLocal('viewer');
+  }).catch(() => { if(!settled){ settled = true; clearTimeout(giveUp); goLocal('viewer'); } });
+})();
+})();
+</script>
+</body>
+</html>
